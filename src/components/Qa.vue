@@ -6,13 +6,15 @@
 <p>{{msg1}}</p>
 <p>{{msg2}}</p>
  </div>
-</template> 
+</template>
 <script>
 export default {
   name: 'QaCmp',
   props: [''],
   data () {
     return {
+      msg1= "added"
+      msg2= "whats next?"
       selected: ''
     }
   }
