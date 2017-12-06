@@ -7,6 +7,7 @@ import Home from '@/components/Home'
 import SubmitQuestion from '@/components/SubmitQuestion'
 import SubmitAnswer from '@/components/SubmitAnswer'
 import ShowQuestion from '@/components/ShowQuestion'
+
 Vue.use(Router)
 
 export default new Router({
