@@ -2,12 +2,10 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <!-- <login> -->
   </div>
 </template>
 
 <script>
-  // import Home from './components/Home.vue'
   import Login from '@/components/Start/Login.vue'
   export default {
     name: 'app',

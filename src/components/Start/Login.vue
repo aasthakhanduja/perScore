@@ -23,6 +23,16 @@
           </span>
         </p>
       </div>
+      <div class="control">
+        <div class="select">
+          <select>
+            <option>--select--</option>
+            <option>Administrator</option>
+    				<option>Questioner</option>
+    				<option>Respondant</option>
+          </select>
+        </div>
+      </div>
 
       <div class="field is-grouped">
         <div class="control">
@@ -38,6 +48,7 @@
 </template>
 
 <script>
+// import loginService from './loginService.js';
   export default {
     name: 'Login',
     data: function () {
@@ -58,7 +69,57 @@
         .catch(function (error) {
           console.log(error)
         })
-      }
+      },
+    methods: {
+        loginUser:function() {
+             const authUser = {}
+             var app = this;
+            login(this.user).then(function(e) {
+                if(e.status === "success") {
+                    authUser.data = res.data;
+                    authUser.token = res.token;
+                    app.$store.state.isLoggedIn = true
+                    window.localStorage.setItem('lbUser',JSON.stringify(authUser));
+                    if(authUser.data.role_id === 'Admin') {
+                     app.$router.push('/admin');
+                    }else {
+                      app.$router.push('/signup');
+                    }
+                    if(authUser.data.role_id === 'questioner') {
+                     app.$router.push('/submit/question');
+                    }else {
+                      app.$router.push('/signup');
+                    }
+                    if(authUser.data.role_id === 'Respondant') {
+                     app.$router.push('/home');
+                     }
+                    // else {
+                    //   app.$router.push('/signup');
+                    // }
+                  }
+            })
+            .catch(function (err){
+                console.log(err.data)
+            })
+        },
+        loginAuth:function () {
+             var app = this;
+            const status =  JSON.parse(window.localStorage.getItem('lbUser'));
+            if(status === null || status === undefined) {
+                 app.$router.push('/login');
+            }else if (status.data.role_id === "admin") {
+               app.$router.push('/admin');
+            }else {
+               app.$router.push('/home');
+            }else {
+              app.$router.push('/submit/question');
+            }
+        }
+    },
+    created:function() {
+        this.loginAuth();
+    }
+}
     }
   }
 </script>

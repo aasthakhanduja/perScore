@@ -58,6 +58,19 @@
 					<input ref="age" class="input is-success" v-model="user.age" type="text" placeholder="Enter your age" required/>
 				</div>
 			</div>
+			<div class="field">
+  <label class="label">Signup as</label>
+  <div class="control">
+    <div class="select">
+      <select>
+        <option>--select--</option>
+        <option>Administrator</option>
+				<option>Questioner</option>
+				<option>Respondant</option>
+      </select>
+    </div>
+  </div>
+</div>
 			<div class="field is-grouped">
 				<div class="control">
 					<button v-on:click="cancelForm" type="button" class="button is-link">Cancel</button>

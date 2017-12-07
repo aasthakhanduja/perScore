@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Start/Login'
 import Registration from '@/components/Start/Registration'
-import Home from '@/components/Respondent/Home'
-// import NewQuestion from '@/components/Admin/NewQuestion'
+import Response from '@/components/Respondent/Response'
+import Category from '@/components/Admin/Category'
 import SubmitQuestion from '@/components/Questionare/SubmitQuestion'
-import SubmitAnswer from '@/components/Admin/SubmitAnswer'
+import AdminHome from '@/components/Admin/AdminHome'
+import Question from '@/components/Admin/Question'
 
 Vue.use(Router)
 
@@ -24,33 +25,33 @@ export default new Router({
     },
     {
       path: '/home',
-      name: 'Home',
-      component: Home
+      name: 'Response',
+      component: Response
     },
     // {
     //   path: '/home/questioner',
     //   name: 'QuestionerHome',
     //   component: QuestionerHome
     // },
-    // {
-    //   path: '/new/question',
-    //   name: 'NewQuestion',
-    //   component: NewQuestion
-    // },
+    {
+      path: '/admin/ques',
+      name: 'Question',
+      component: Question
+    },
     {
       path: '/submit/question',
       name: 'SubmitQuestion',
       component: SubmitQuestion
     },
-    // {
-    //   path: '/show/question/:question_id',
-    //   name: 'ShowQuestion',
-    //   component: ShowQuestion
-    // },
     {
-      path: '/submit/answer',
-      name: 'SubmitAnswer',
-      component: SubmitAnswer
+      path: '/admin/cat',
+      name: 'Category',
+      component: Category
+    },
+    {
+      path: '/admin',
+      name: 'AdminHome',
+      component: AdminHome
     }
   ]
 })
