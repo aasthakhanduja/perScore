@@ -8,7 +8,7 @@
 
 <script>
   // import Home from './components/Home.vue'
-  import Login from '@/components/Login.vue'
+  import Login from '@/components/Start/Login.vue'
   export default {
     name: 'app',
     components: {
