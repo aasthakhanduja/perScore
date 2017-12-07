@@ -70,28 +70,28 @@
           console.log(error)
         })
       },
-    methods: {
-        loginUser:function() {
-             const authUser = {}
-             var app = this;
-            login(this.user).then(function(e) {
-                if(e.status === "success") {
-                    authUser.data = res.data;
-                    authUser.token = res.token;
-                    app.$store.state.isLoggedIn = true
-                    window.localStorage.setItem('lbUser',JSON.stringify(authUser));
-                    if(authUser.data.role_id === 'Admin') {
-                     app.$router.push('/admin');
-                    }else {
-                      app.$router.push('/signup');
+      methods: {
+        loginUser: function () {
+          const authUser = {}
+          var app = this
+          login(this.user).then(function (e) {
+            if (e.status === 'success') {
+                authUser.data = e.data
+                authUser.token = e.token
+                app.$store.state.isLoggedIn = true
+                window.localStorage.setItem('lbUser', JSON.stringify(authUser))
+                    if (authUser.data.role_id === 'Admin') {
+                     app.$router.push('/admin')
+                    } else {
+                      app.$router.push ('/signup')
                     }
-                    if(authUser.data.role_id === 'questioner') {
-                     app.$router.push('/submit/question');
-                    }else {
-                      app.$router.push('/signup');
+                    if (authUser.data.role_id === 'questioner') {
+                     app.$router.push('/submit/question')
+                    } else {
+                      app.$router.push('/signup')
                     }
-                    if(authUser.data.role_id === 'Respondant') {
-                     app.$router.push('/home');
+                    if (authUser.data.role_id === 'Respondant') {
+                     app.$router.push('/home')
                      }
                     // else {
                     //   app.$router.push('/signup');
@@ -102,24 +102,24 @@
                 console.log(err.data)
             })
         },
-        loginAuth:function () {
-             var app = this;
-            const status =  JSON.parse(window.localStorage.getItem('lbUser'));
-            if(status === null || status === undefined) {
-                 app.$router.push('/login');
-            }else if (status.data.role_id === "admin") {
-               app.$router.push('/admin');
-            }else {
-               app.$router.push('/home');
-            }else {
-              app.$router.push('/submit/question');
+        loginAuth: function () {
+             var app = this
+            const status = JSON.parse(window.localStorage.getItem('lbUser'))
+            if (status === null || status === undefined) {
+                app.$router.push('/login')
+            } else if (status.data.role_id === 'admin') {
+              app.$router.push('/admin')
+            } else {
+              app.$router.push('/home')
             }
+            // else {
+            //   app.$router.push('/submit/question');
+            // }
         }
     },
-    created:function() {
-        this.loginAuth();
+     created: function () {
+        this.loginAuth()
     }
-}
     }
   }
 </script>

@@ -61,7 +61,7 @@
 			<div class="field">
   <label class="label">Signup as</label>
   <div class="control">
-    <div class="select">
+    <div ref="role" v-modal="user.role" class="select">
       <select>
         <option>--select--</option>
         <option>Administrator</option>
@@ -96,7 +96,8 @@
 	        confirmPassword: '',
 	        country: '',
 	        city: '',
-	        age: ''
+	        age: '',
+					role: ''
 	      }
 	    }
 	  },
