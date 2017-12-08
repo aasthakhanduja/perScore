@@ -19,8 +19,7 @@ Vue.config.productionTip = false
 
 // Setting up Axios on Vue Instance, for use via this.$axios
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://192.168.100.156:6040/',
-  timeout: 1000,
+  baseURL: 'http://localhost:6040/',
   headers: {
     'Content-Type': 'application/json'
     // Authorization: 'Bearer {token}'
