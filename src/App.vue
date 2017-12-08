@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import Login from '@/components/Start/Login.vue'
+  import Login from '@/components/Login/Home.vue'
   export default {
     name: 'app',
     components: {

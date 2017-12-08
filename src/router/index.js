@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Start/Login'
-import Registration from '@/components/Start/Registration'
-import Home from '@/components/Respondent/Home'
-// import NewQuestion from '@/components/Admin/NewQuestion'
-import SubmitQuestion from '@/components/Questionare/SubmitQuestion'
-import SubmitAnswer from '@/components/Admin/SubmitAnswer'
+import Login from '@/components/Login/Home'
+import Registration from '@/components/Registration/Home'
+import Admin from '@/components/Admin/Home'
+import Questioner from '@/components/Questioner/Home'
+import Respondent from '@/components/Respondent/Home'
+import AdminsCategories from '@/components/Admin/Categories'
+import AdminsQuestions from '@/components/Admin/Questions'
+import NewQuestion from '@/components/Questioner/NewQuestion'
+import NextQuestion from '@/components/Respondent/NextQuestion'
 
 Vue.use(Router)
 
@@ -13,7 +16,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
       component: Login
     },
@@ -23,34 +26,39 @@ export default new Router({
       component: Registration
     },
     {
-      path: '/home',
-      name: 'Home',
-      component: Home
+      path: '/questioner',
+      name: 'Questioner',
+      component: Questioner
     },
-    // {
-    //   path: '/home/questioner',
-    //   name: 'QuestionerHome',
-    //   component: QuestionerHome
-    // },
-    // {
-    //   path: '/new/question',
-    //   name: 'NewQuestion',
-    //   component: NewQuestion
-    // },
     {
-      path: '/submit/question',
-      name: 'SubmitQuestion',
-      component: SubmitQuestion
+      path: '/respondent',
+      name: 'Respondent',
+      component: Respondent
     },
-    // {
-    //   path: '/show/question/:question_id',
-    //   name: 'ShowQuestion',
-    //   component: ShowQuestion
-    // },
     {
-      path: '/submit/answer',
-      name: 'SubmitAnswer',
-      component: SubmitAnswer
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
+    },
+    {
+      path: '/admin/questions',
+      name: 'AdminsQuestions',
+      component: AdminsQuestions
+    },
+    {
+      path: '/admin/categories',
+      name: 'AdminsCategories',
+      component: AdminsCategories
+    },
+    {
+      path: '/questioner/question/new',
+      name: 'NewQuestion',
+      component: NewQuestion
+    },
+    {
+      path: '/respondent/question/new',
+      name: 'NextQuestion',
+      component: NextQuestion
     }
   ]
 })
