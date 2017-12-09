@@ -1,6 +1,6 @@
 <template>
 <div class="signup">
-	<div class="notification" v-show="checkStatus">{{message}}</div>
+	<div class="notification" v-show="checkStatus">{{ message }}</div>
 	<form class="signup_form">
 		<div class="field">
 			<label class="label">First Name</label>
@@ -45,17 +45,17 @@
 		<div class="field">
 			<label class="label">Country</label>
 			<div class="control">
-				<input ref="country" class="input is-success" v-model="user.country" type="text" placeholder="Enter Country" required/>
+				<input ref="country" class="input is-success" v-model="user.location.country" type="text" placeholder="Enter Country" required/>
 			</div>
 		</div>
 		<div class="field">
 			<label class="label">City</label>
 			<div class="control">
-				<input ref="city" class="input is-success" v-model="user.city" type="text" placeholder="Enter City" required/>
+				<input ref="city" class="input is-success" v-model="user.location.city" type="text" placeholder="Enter City" required/>
 			</div>
 		</div>
 		<div class="field">
-			<label class="label"> Age </label>
+			<label class="label">Age</label>
 			<div class="control">
 				<input ref="age" class="input is-success" v-model="user.age" type="text" placeholder="Enter your age" required/>
 			</div>
@@ -65,17 +65,17 @@
 			<div class="control">
 				<div ref="role" v-model="user.role" class="select">
 					<select>
-			        <option>--select--</option>
+			        <option>Select Role</option>
 			        <option>Administrator</option>
 							<option>Questioner</option>
-							<option>Respondant</option>
+							<option>Respondent</option>
 		      	</select>
 				</div>
 			</div>
 		</div>
 		<div class="field is-grouped">
 			<div class="control">
-				<button v-on:click="cancelForm" type="button" class="button is-link">Cancel</button>
+				<button type="button" class="button is-link">Cancel</button>
 			</div>
 			<div class="control">
 				<button class="button is-link" type="button" v-on:click="submitForm">Submit</button>
@@ -117,7 +117,11 @@ export default {
 					app.status = response.data.status
 					app.message = response.data.message
 					if (response.data.status === 'SUCCESS') {
-						console.log('Status: ' + response.data.status)
+						app.$store.commit('update', {
+							status: app.status,
+							message: app.message
+						})
+						console.log('Status: ' + app.$store.state.status)
 						app.$router.push({
 							name: 'Login'
 						})
