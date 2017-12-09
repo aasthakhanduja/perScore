@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import Vuex from 'vuex'
 
 // import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -13,9 +14,24 @@ import axios from 'axios'
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
+Vue.use(Vuex)
 Vue.use(Buefy)
 
 Vue.config.productionTip = false
+
+// Use store for sharing data between components
+const store = new Vuex.Store({
+  state: {
+    status: '',
+    message: ''
+  },
+  mutations: {
+    update(state, updatedData) {
+      state.status = updatedData.status
+      state.message = updatedData.message
+    }
+  }
+})
 
 // Setting up Axios on Vue Instance, for use via this.$axios
 Vue.prototype.$axios = axios.create({
@@ -34,6 +50,7 @@ new Vue({
   el: '#app',
   render: h => h(App),
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
