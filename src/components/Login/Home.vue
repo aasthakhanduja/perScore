@@ -73,7 +73,8 @@ export default {
 					if (response.data.status === 'SUCCESS') {
 						app.$store.commit('update', {
 							status: response.data.status,
-							message: response.data.message
+							message: response.data.message,
+							response: response.data
 						})
 						console.log('Status: ' + app.$store.state.status)
 						app.$router.push({
@@ -102,45 +103,6 @@ export default {
 				'failure': (this.$store.state.status === 'FAILURE')
 			}
 		}
-		// loginUser: function() {
-		// 	const authUser = {}
-		// 	var app = this
-		// 	login(this.user).then(function(e) {
-		// 			if (e.status === 'success') {
-		// 				authUser.data = e.data
-		// 				authUser.token = e.token
-		// 				app.$store.state.isLoggedIn = true
-		// 				window.localStorage.setItem('lbUser', JSON.stringify(authUser))
-		// 				if (authUser.data.role_id === 'Admin') {
-		// 					app.$router.push('/admin')
-		// 				} else {
-		// 					app.$router.push('/signup')
-		// 				}
-		// 				if (authUser.data.role_id === 'Questioner') {
-		// 					app.$router.push('/submit/question')
-		// 				} else {
-		// 					app.$router.push('/signup')
-		// 				}
-		// 				if (authUser.data.role_id === 'Respondant') {
-		// 					app.$router.push('/home')
-		// 				}
-		// 			}
-		// 		})
-		// 		.catch(function(err) {
-		// 			console.log(err.data)
-		// 		})
-		// },
-		// loginAuth: function() {
-		// 	var app = this
-		// 	const status = JSON.parse(window.localStorage.getItem('lbUser'))
-		// 	if (status === null || status === undefined) {
-		// 		app.$router.push('/login')
-		// 	} else if (status.data.role_id === 'admin') {
-		// 		app.$router.push('/admin')
-		// 	} else {
-		// 		app.$router.push('/home')
-		// 	}
-		// }
 	}
 }
 </script>

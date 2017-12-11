@@ -22,12 +22,14 @@ Vue.config.productionTip = false
 const store = new Vuex.Store({
   state: {
     status: '',
-    message: ''
+    message: '',
+    response: {}
   },
   mutations: {
     update(state, updatedData) {
       state.status = updatedData.status
       state.message = updatedData.message
+      state.response = updatedData.response
     }
   }
 })
