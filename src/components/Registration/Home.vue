@@ -6,33 +6,36 @@
 		<div class="field">
 			<label class="label">First Name</label>
 			<div class="control has-icons-left">
-				<input ref="firstName" v-bind:class="getClass()" v-model="user.first_name" type="text" placeholder="Enter First Name" required/>
+				<input ref="first_name" v-bind:class="getClass()" v-model="user.first_name" type="text" placeholder="Enter First Name" required/>
 			</div>
-			<!-- <p class="help is-danger" v-show="checkStatus">{{ validationMessage("firstName") }}</p> -->
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("first_name") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">Last Name</label>
 			<div class="control has-icons-left">
-				<input ref="lastName" v-bind:class="getClass()" v-model="user.last_name" type="text" placeholder="Enter Last Name" required/>
+				<input ref="last_name" v-bind:class="getClass()" v-model="user.last_name" type="text" placeholder="Enter Last Name" required/>
 			</div>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("last_name") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">Email</label>
 			<div class="control has-icons-left">
 				<input ref="email" v-bind:class="getClass()" v-model="user.email" type="email" placeholder="Enter Email" required/>
+				<span class="icon is-small is-left">
+								<i class="fa fa-envelope"></i>
+							</span>
 			</div>
-			<span class="icon is-small is-left">
-							<i class="fa fa-envelope"></i>
-						</span>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("email") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">Password</label>
-			<p class="control has-icons-left">
+			<div class="control has-icons-left">
 				<input ref="password" v-bind:class="getClass()" v-model="user.password" type="password" placeholder="Enter Password" required/>
 				<span class="icon is-small is-left">
 								<i class="fa fa-lock"></i>
 							</span>
-			</p>
+			</div>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("password") }}</p>
 		</div>
 		<div class="field">
 			<label class="label"> Confirm Password</label>
@@ -48,18 +51,21 @@
 			<div class="control has-icons-left">
 				<input ref="country" v-bind:class="getClass()" v-model="user.location.country" type="text" placeholder="Enter Country" required/>
 			</div>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("country") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">City</label>
 			<div class="control has-icons-left">
 				<input ref="city" v-bind:class="getClass()" v-model="user.location.city" type="text" placeholder="Enter City" required/>
 			</div>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("city") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">Age</label>
 			<div class="control has-icons-left">
 				<input ref="age" v-bind:class="getClass()" v-model="user.age" type="number" placeholder="Enter your age" required/>
 			</div>
+			<p class="help is-danger" v-show="checkStatus()">{{ validationMessage("age") }}</p>
 		</div>
 		<div class="field">
 			<label class="label">Signup as</label>
@@ -142,9 +148,9 @@ export default {
 		},
 		checkStatus: function() {
 			if (this.$store.state.status === 'SUCCESS') {
-				return true
-			} else {
 				return false
+			} else {
+				return true
 			}
 		},
 		getClass: function() {
@@ -157,8 +163,8 @@ export default {
 			var fields = this.fields
 			var message = ''
 			for (var i = 0; i < fields.length; i++) {
-				if (fields[i].Name === fieldName) {
-					message = fields[i].Message
+				if (fields[i].name === fieldName) {
+					message = fields[i].validation
 					break
 				}
 			}
