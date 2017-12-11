@@ -19,7 +19,7 @@ Vue.use(Buefy)
 
 Vue.config.productionTip = false
 
-// Use store for sharing data between components
+// Use store for sharing data between components, available via this.$store
 const store = new Vuex.Store({
   state: {
     status: '',

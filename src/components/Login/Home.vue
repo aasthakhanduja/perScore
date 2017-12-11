@@ -1,6 +1,7 @@
 <template>
 <div class="login" id="login">
-	<div class="notification" v-show="notify">{{ message() }}</div>
+	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="page_title">Login to PerScore</div>
 	<form class="login_form">
 		<div class="field">
 			<label class="label">Email</label>
@@ -24,23 +25,13 @@
           </span>
 			</p>
 		</div>
-		<div class="control">
-			<div class="select">
-				<select>
-            <option>Select Role</option>
-            <option>Administrator</option>
-    				<option>Questioner</option>
-    				<option>Respondent</option>
-          </select>
-			</div>
-		</div>
 
-		<div class="field is-grouped">
-			<div class="control">
-				<button class="button is-link" v-on:click="submitForm">Submit</button>
+		<div class="field is-grouped sb_buttons">
+			<div class="control has-icons-left">
+				<button type="button" class="button is-link">Cancel</button>
 			</div>
-			<div class="control">
-				<button class="button is-text">Cancel</button>
+			<div class="control has-icons-left">
+				<button class="button is-link" type="button" v-on:click="submitForm">Submit</button>
 			</div>
 		</div>
 	</form>
@@ -57,7 +48,9 @@ export default {
 				email: '',
 				password: ''
 			},
-			notify: false
+			fields: [],
+			notify: false,
+			colorClass: ''
 		}
 	},
 	created: function() {
@@ -73,9 +66,28 @@ export default {
 	methods: {
 		submitForm: function(e) {
 			e.preventDefault()
+			var app = this
 			this.$axios.post('/login', JSON.stringify(this.user))
 				.then(function(response) {
 					console.log(response)
+					if (response.data.status === 'SUCCESS') {
+						app.$store.commit('update', {
+							status: response.data.status,
+							message: response.data.message
+						})
+						console.log('Status: ' + app.$store.state.status)
+						app.$router.push({
+							name: 'Questioner'
+						})
+					} else {
+						app.notify = true
+						app.colorClass = 'failure'
+						app.$store.commit('update', {
+							status: response.data.status,
+							message: response.data.message
+						})
+						app.fields = response.data.fields
+					}
 				})
 				.catch(function(error) {
 					console.log(error)
@@ -83,6 +95,12 @@ export default {
 		},
 		message: function() {
 			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
 		}
 		// loginUser: function() {
 		// 	const authUser = {}
@@ -135,13 +153,42 @@ div.login {
 }
 
 form.login_form {
+	margin-top: 3em;
 	width: 30%;
 	margin-left: 5%;
 	/*margin-left: auto;
-      margin-right: auto;*/
+		margin-right: auto;*/
+	text-align: left;
 }
 
-div.login form {
+div.page_title {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	font-size: 14pt;
+	font-weight: bold;
+	color: #7957d5;
+}
+
+div.signup form {
 	margin-bottom: 1em;
+}
+
+div.notification {
+	height: 2em;
+	text-align: center;
+	font-size: 14pt;
+	padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+div.sb_buttons {
+	margin-top: 2em;
+}
+
+.success {
+	color: darkgreen;
+}
+
+.failure {
+	color: red;
 }
 </style>

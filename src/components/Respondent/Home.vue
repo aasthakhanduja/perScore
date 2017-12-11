@@ -1,53 +1,47 @@
 <template>
-<div>
-	<h1> Welcome to phyc test </h1>
-	<h2> get appropriate results in just 5 questions</h2>
-	<div class="field is-grouped">
-		<div class="home">
-			<home-cmp :question="questions[qindex]"></home-cmp>
-			<button v-on:click="nextClick" type="button" class="button is-link">Next</button>
-		</div>
-		<div class="control">
-			<button class="button is-link" type="button" v-on:click="prevClick">Previous</button>
-		</div>
+<div class="respondent">
+	<h1>welcome to respondant Home</h1>
+	<p> your selected category is {{selected}}</p>
+	<div class="control">
+		<button class="button is-link" position="center" type="button" v-on:click="start">Start the test</button>
 	</div>
-	<ul id="question">
-		<li v-for="answer in questions.answers">
-			<input v-on:click='checkIt(answer)' type="radio" name="ques" v-model="selected" :value="answer"> {{answer}}<br>
-		</li>
-	</ul>
-	<button v-on:click="reset" class="button is-link" type="button">Reset</button>
+	<h3>OR</h3>
+	<h4>Select from a choice below:</h4>
+	<nav>
+		<ul>
+			<li><a href="#">category 1</a></li>
+			<li><a href="#">category 3</a></li>
+			<li><a href="#">category 3</a></li>
+		</ul>
+	</nav>
+
 </div>
 </template>
 
 <script>
 export default {
-	data() {
+	name: 'Questioner',
+	data: function() {
 		return {
-			selected: '',
-			qindex: 0,
-			questions: []
+
 		}
 	},
 	methods: {
-		checkIt: function(val) {
-			if (val === this.selected) {
-				this.selected = true
-			}
-		},
-		reset: function() {
-			this.selected = false
-		},
-		nextClick: function() {
-			if (this.qindex < this.questions.length - 1) {
-				this.qindex = this.qindex + 1
-			}
-		},
-		prevClick: function() {
-			if (this.qindex > 0) {
-				this.qindex = this.qindex - 1
-			}
+		onSubmit: function() {
+
 		}
+	},
+	someMethod: function() {
+
 	}
+
 }
 </script>
+
+<style scoped>
+div.respondent {
+	width: 30%;
+	margin-left: 15%;
+	position: center,
+}
+</style>
