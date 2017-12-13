@@ -63,8 +63,7 @@ export default {
 	},
 	methods: {
 		nextlevel: function(e) {
-			console.log('nextlevel')
-			console.log(this.categoryLastSelcted)
+			console.log(e.target.innerText)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
@@ -83,18 +82,16 @@ export default {
 				}
 			}
 			this.selectedCategoryName = e.target.innerText
+			this.isSelected = true
+			this.categoryLastSelcted.push(this.selectedCategoryName)
 			if (this.categoriesToShow.length === 0) {
 				this.categoriesToShow = categoriesToShow
 			} else {
-				this.isSelected = true
 				this.hasPrevious = true
-				this.categoryLastSelcted.push(this.selectedCategoryName)
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
 		},
 		goBack: function(e) {
-			console.log('goBack')
-			console.log(this.categoryLastSelcted)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
@@ -121,7 +118,6 @@ export default {
 				}
 			}
 			if (this.categoriesToShow.length === 0) {
-				console.log('this.categoriesToShow.length == 0')
 				this.categoriesToShow = categoriesToShow
 				this.selectedCategoryName = this.categoryLastSelcted.pop()
 			} else {
@@ -145,7 +141,6 @@ export default {
 					break
 				}
 			}
-			console.log(category)
 			this.$store.commit('update', {
 				componentData: {
 					selectedCategoryName: this.selectedCategoryName,

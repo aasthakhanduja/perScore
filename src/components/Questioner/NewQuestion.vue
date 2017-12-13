@@ -105,8 +105,9 @@ export default {
 	methods: {
 		submitForm: function(event) {
 			event.preventDefault()
+			console.log(this.question)
 			var app = this
-			this.$axios.post('/questioner', JSON.stringify(this.question))
+			this.$axios.post('create_question', JSON.stringify(this.question))
 				.then(function(response) {
 					console.log(response)
 					app.status = response.data.status
