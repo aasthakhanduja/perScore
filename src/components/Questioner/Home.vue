@@ -8,7 +8,7 @@
 			<h2><b>Choose a category:</b></h2>
 			<ul class="categories">
 				<li v-for="category in categoriesToShow">
-					<a href="javascript:void(0)" :data-level="category.level" v-on:click="nextlevel">{{ category.name }}</a>
+					<a href="javascript:void(0)" :data-level="currentLevel" v-on:click="nextlevel">{{ category.name }}</a>
 				</li>
 			</ul>
 			<div class="control align-center">
@@ -63,45 +63,74 @@ export default {
 	},
 	methods: {
 		nextlevel: function(e) {
+			console.log('nextlevel')
+			console.log(this.categoryLastSelcted)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
+			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
-					this.categoriesToShow.push(categories[i])
+				if (categories[i].name === e.target.innerText) {
+					selectedCategory = categories[i]
+					break
 				}
 			}
+			for (i = 0; i < categories.length; i++) {
+				if (categories[i].parent === selectedCategory.id) {
+					if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
+						this.categoriesToShow.push(categories[i])
+					}
+				}
+			}
+			this.selectedCategoryName = e.target.innerText
 			if (this.categoriesToShow.length === 0) {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.isSelected = true
 				this.hasPrevious = true
 				this.categoryLastSelcted.push(this.selectedCategoryName)
-				this.selectedCategoryName = e.target.innerText
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
 		},
 		goBack: function(e) {
+			console.log('goBack')
+			console.log(this.categoryLastSelcted)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
+			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
-					this.categoriesToShow.push(categories[i])
+				if (categories[i].name === this.selectedCategoryName) {
+					selectedCategory = categories[i]
+					break
 				}
 			}
-			if (this.categoryLastSelcted.length === 1) {
-				this.hasPrevious = false
+			if (selectedCategory.parent === 0) {
+				for (i = 0; i < categories.length; i++) {
+					if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
+						this.categoriesToShow.push(categories[i])
+					}
+				}
+			} else {
+				for (i = 0; i < categories.length; i++) {
+					if (categories[i].parent === selectedCategory.parent) {
+						if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
+							this.categoriesToShow.push(categories[i])
+						}
+					}
+				}
 			}
 			if (this.categoriesToShow.length === 0) {
-				this.isSelected = false
+				console.log('this.categoriesToShow.length == 0')
 				this.categoriesToShow = categoriesToShow
+				this.selectedCategoryName = this.categoryLastSelcted.pop()
 			} else {
 				this.isSelected = true
 				this.selectedCategoryName = this.categoryLastSelcted.pop()
 				this.currentLevel = (this.currentLevel - 1)
-				if (this.categoryLastSelcted.length === 0) {
+				if (this.currentLevel === 1) {
 					this.isSelected = false
+					this.hasPrevious = false
 				}
 			}
 		},
