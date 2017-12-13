@@ -77,9 +77,19 @@ export default {
 							response: response.data
 						})
 						console.log('Status: ' + app.$store.state.status)
-						app.$router.push({
-							name: 'Questioner'
-						})
+						if (response.data.role === 'Administrator') {
+							app.$router.push({
+								name: 'Admin'
+							})
+						} else if (response.data.role === 'Questioner') {
+							app.$router.push({
+								name: 'Questioner'
+							})
+						} else {
+							app.$router.push({
+								name: 'Respondent'
+							})
+						}
 					} else {
 						app.notify = true
 						app.colorClass = 'failure'

@@ -176,7 +176,7 @@ div.q-actions div.control button {
 	margin-right: 4em;
 }
 
-div.q-actions div.control span.fr-1 {
+q div.q-actions div.control span.fr-1 {
 	position: absolute;
 	top: 0.5em;
 	left: -4em;

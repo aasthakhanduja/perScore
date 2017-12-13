@@ -9,9 +9,7 @@
 	<h4>Select from a choice below:</h4>
 	<nav>
 		<ul>
-			<li><a href="#">category 1</a></li>
-			<li><a href="#">category 3</a></li>
-			<li><a href="#">category 3</a></li>
+			<li v-for="category in list_categories"><a href="javascript:void(0)"> {{category.name}} </a></li>
 		</ul>
 	</nav>
 
@@ -20,19 +18,23 @@
 
 <script>
 export default {
-	name: 'Questioner',
+	name: 'Respondent',
 	data: function() {
 		return {
+			list_categories: []
 
 		}
 	},
 	methods: {
-		onSubmit: function() {
+		start: function() {
 
 		}
 	},
-	someMethod: function() {
 
+	created() {
+		var categories = this.$store.state.response.categories
+		console.log(this.$store.state.response.categories)
+		this.list_categories = categories
 	}
 
 }
