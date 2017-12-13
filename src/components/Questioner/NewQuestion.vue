@@ -1,59 +1,69 @@
-<template lang="html">
-  <div class="New">
-    <label class="label is-large">Add your new question HERE!</label>
-    <!-- <div class="notification" v-show="checkStatus">{{message}}</div> -->
-    <div class="field has-addons is-horizontal">
+<template>
+<div class="questioner">
+	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="questioner-functions columns">
+		<div class="column">
+			<label class="label is-horizontal">Submit New Question (For <span class="selected-category">{{ selectedCategoryName }}</span>)</label>
+			<br>
+			<div class="field">
+				<div class="control">
+					<input v-on:blur="updateCategory" ref="new_category" class="input cls" type="text" placeholder="New Category (Optional)"></input>
+					<a class="button is-primary cls" v-on:click="appendCategory()">New Sub Category</a>
+				</div>
+			</div>
 
-      <!-- <div class="field has-addons">
-  <p class="control">
-    <input class="input" type="text" placeholder="">
-  </p>
-  <p class="control">
-    <a class="button is-static">
-      @gmail.com
-    </a>
-  </p>
-</div> -->
-  <label class="label is-horizontal">Add new Question</label>
-  <div class="control">
-    <p class="control">
-      <input ref="categories" v-bind:class="getClass" v-model="question.categories" class="input" type="text" placeholder="Category">
-    </p>
-    <p class="control">
-      <a class="button is-primary">
-        sub-category
-      </a>
-    </p>
-    <input ref="title" v-bind:class="getClass" v-model="question.title" class="input" type="text" placeholder="Add Title">
-    <textarea class="textarea" type="text" placeholder="body"></textarea>
-    <div class="field-label has-addons is-horizontal">
-  <label class="label is-horizontal">Add Answers</label>
-  <div class="control">
-    <input  class="input" type="text" placeholder="Option 1"><p class="control"><a class="button is-static">weight=10</a></p>
-    <input  class="input" type="text" placeholder="Option 2"><p class="control"><a class="button is-static">weight=15</a></p>
-    <input  class="input" type="text" placeholder="Option 3"><p class="control"><a class="button is-static">weight=20</a></p>
-    <input  class="input" type="text" placeholder="Option 4"><p class="control"><a class="button is-static">weight=25</a></p>
-    <input  class="input" type="text" placeholder="Option 5"><p class="control"><a class="button is-static">weight=30</a></p>
-    <input  class="input" type="text" placeholder="Answer's Category">
-    <!-- <input ref="option1" v-bind:class="getClass" v-model="question.answer.option1" class="input" type="text" placeholder="Option 1">
-    <input ref="option2" v-bind:class="getClass" v-model="question.answer.option2" class="input" type="text" placeholder="Option 2">
-    <input ref="option3" v-bind:class="getClass" v-model="question.answer.option3" class="input" type="text" placeholder="Option 3">
-    <input ref="option4" v-bind:class="getClass" v-model="question.answer.option4" class="input" type="text" placeholder="Option 4">
-    <input ref="option5" v-bind:class="getClass" v-model="question.answer.option5" class="input" type="text" placeholder="Option 5">
-    <input ref="categories" v-bind:class="getClass" v-model="question.answer.categories" class="input" type="text" placeholder="Answer's Category"> -->
-  </div>
+			<div class="field">
+				<div class="control">
+					<input v-model="question.title" class="input" type="text" placeholder="Add Title">
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="control">
+					<textarea v-model="question.body" class="textarea" type="text" placeholder="Add Body"></textarea>
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="control">
+					<input v-model="question.weight.value" class="input" type="number" placeholder="Define Weight"></input>
+				</div>
+			</div>
+
+			<div class="is-horizontal fill-width top-2em">
+				<label class="label is-horizontal align-center">Answer</label>
+				<div class="field columns">
+					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 1"></span>
+					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+				</div>
+				<div class="field columns">
+					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 2"></span>
+					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+				</div>
+				<div class="field columns">
+					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 3"></span>
+					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+				</div>
+				<div class="field columns">
+					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 4"></span>
+					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+				</div>
+				<div class="field columns">
+					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 5"></span>
+					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+				</div>
+			</div>
+			<div class="field is-grouped top-2em">
+				<div class="control">
+					<button class="button is-link" type="button">Cancel</button>
+				</div>
+				<div class="control">
+					<button class="button is-link" type="button" v-on:click="submitForm">Submit Question</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="field is-grouped">
-  <div class="control">
-    <button class="button is-link" type="button" v-on:click="submitQuestion">Submit Question</button>
-  </div>
-  <div class="control">
-    <button class="button is-link" type="button" v-on:click="cancelQuestion">Cancel</button>
-  </div>
-</div>
-  </div>
-</div>
-  </div>
 </template>
 
 <script>
@@ -61,78 +71,165 @@ export default {
 	name: 'NewQuestion',
 	data() {
 		return {
+			notify: false,
+			lastCategory: {},
+			selectedCategory: {},
+			selectedCategoryName: '',
 			question: {
 				title: '',
 				body: '',
-				category: {
-					id: '',
-					name: '',
-					option: '',
-					parent: '',
-					categories: []
-				},
+				category: {},
 				answer: {
 					option1: '',
 					option2: '',
 					option3: '',
 					option4: '',
 					option5: '',
-					category: {
-						id: '',
-						name: '',
-						option: '',
-						parent: '',
-						categories: []
-					}
-					// weights: []
+					categories: [],
+					weights: []
 				},
-				// weight: {
-				// 	option: '',
-				// 	value: ''
-				// },
+				weight: {
+					option: '',
+					value: ''
+				},
 				status: '',
 				message: ''
 			}
-			// },
-			// methods: {
-			// 	submitQuestion: function(e) {
-			// 		e.preventDefault()
-			// 		var app = this
-			// 		this.$axios.post('/questioner', JSON.stringify(this.question))
-			// 			.then(function(response) {
-			// 				console.log(response)
-			// 				app.status = response.data.status
-			// 				app.message = response.data.message
-			// 				if (response.data.status === 'SUCCESS') {
-			// 					console.log('Status: ' + response.data.status)
-			// 					app.$router.push({
-			// 						name: 'Questioner'
-			// 					})
-			// 				}
-			// 			})
-			// 			.catch(function(error) {
-			// 				console.log(error)
-			// 			})
-			// 	},
-			// 	getClass: function() {
-			// 		return {
-			// 			'input': true,
-			// 			'is-danger': (this.status === 'FAILURE')
-			// 		}
-			// 	}
+		}
+	},
+	created: function() {
+		this.lastCategory = this.$store.state.componentData.selectedCategory
+		this.selectedCategoryName = this.$store.state.componentData.selectedCategoryName
+		this.question.category = this.lastCategory
+	},
+	methods: {
+		submitForm: function(event) {
+			event.preventDefault()
+			var app = this
+			this.$axios.post('/questioner', JSON.stringify(this.question))
+				.then(function(response) {
+					console.log(response)
+					app.status = response.data.status
+					app.message = response.data.message
+					if (response.data.status === 'SUCCESS') {
+						console.log('Status: ' + response.data.status)
+						app.$router.push({
+							name: 'Questioner'
+						})
+					}
+				})
+				.catch(function(error) {
+					console.log(error)
+				})
+		},
+		updateCategory: function(event) {
+			this.selectedCategoryName = event.target.value
+		},
+		appendCategory: function(event) {
+			this.selectedCategory = {
+				id: 0,
+				name: this.$refs.new_category.value,
+				parent: this.lastCategory.id,
+				level: parseInt(this.lastCategory.level) + 1,
+				categories: []
+			}
+			this.appendToLastEmptyCategory(this.question.category)
+			this.lastCategory = this.selectedCategory
+		},
+		appendToLastEmptyCategory: function(category) {
+			if (category.categories.length > 0) {
+				this.appendToLastEmptyCategory(category.categories[0])
+			}
+			category.categories.push(this.selectedCategory)
+		},
+		message: function() {
+			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
 		}
 	}
 }
 </script>
 
 <style scoped>
-div.New {
-	width: 75%;
+div.page_title {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	font-size: 14pt;
+	font-weight: bold;
+	color: #7957d5;
+}
+
+div.questioner-functions {
+	margin-top: 2em;
+	width: 50%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-div.New form {
-	margin-bottom: 2em;
+div.notification {
+	height: 2em;
+	text-align: center;
+	font-size: 14pt;
+	padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+.success {
+	color: darkgreen;
+}
+
+.failure {
+	color: red;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.align-right {
+	text-align: right;
+}
+
+.field {
+	position: relative;
+}
+
+.cls {
+	width: 79.5%;
+	display: inline;
+}
+
+a.cls {
+	top: 6px;
+}
+
+span.cls {
+	position: absolute;
+}
+
+.cls1 {
+	width: 90%;
+	display: inline;
+}
+
+a.cls1 {
+	top: 8px;
+}
+
+.top-2em {
+	margin-top: 2em;
+}
+
+.fill-width {
+	width: 100%;
+}
+
+.selected-category {
+	font-weight: bold;
+	color: crimson;
 }
 </style>

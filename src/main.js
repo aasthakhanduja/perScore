@@ -23,13 +23,15 @@ const store = new Vuex.Store({
   state: {
     status: '',
     message: '',
-    response: {}
+    response: {},
+    componentData: {}
   },
   mutations: {
     update(state, updatedData) {
       state.status = updatedData.status
       state.message = updatedData.message
       state.response = updatedData.response
+      state.componentData = updatedData.componentData
     }
   }
 })

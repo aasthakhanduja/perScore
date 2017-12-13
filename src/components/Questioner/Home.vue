@@ -21,7 +21,7 @@
 					<span class="fr-1">Create </span>
 					<a class="button is-link" v-on:click="newQuestion">New Question</a>
 					<span class="fr-2">under</span>
-					<span class="fr-3">{{ categorySelcted }}</span>
+					<span class="fr-3">{{ selectedCategoryName }}</span>
 				</div>
 			</div>
 		</div>
@@ -39,7 +39,7 @@ export default {
 			currentLevel: 1,
 			categoriesToShow: [],
 			isSelected: false,
-			categorySelcted: '',
+			selectedCategoryName: '',
 			categoryLastSelcted: []
 		}
 	},
@@ -74,8 +74,8 @@ export default {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.isSelected = true
-				this.categoryLastSelcted.push(this.categorySelcted)
-				this.categorySelcted = e.target.innerText
+				this.categoryLastSelcted.push(this.selectedCategoryName)
+				this.selectedCategoryName = e.target.innerText
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
 		},
@@ -93,7 +93,7 @@ export default {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.isSelected = true
-				this.categorySelcted = this.categoryLastSelcted.pop()
+				this.selectedCategoryName = this.categoryLastSelcted.pop()
 				this.currentLevel = (this.currentLevel - 1)
 				if (this.categoryLastSelcted.length === 0) {
 					this.isSelected = false
@@ -102,18 +102,25 @@ export default {
 		},
 		newQuestion: function(e) {
 			e.preventDefault()
+			var category
+			var categories = this.$store.state.response.categories
+			for (var i = 0; i < categories.length; i++) {
+				if (this.selectedCategoryName === categories[i].name) {
+					category = categories[i]
+					category.categories = []
+					break
+				}
+			}
+			console.log(category)
+			this.$store.commit('update', {
+				componentData: {
+					selectedCategoryName: this.selectedCategoryName,
+					selectedCategory: category
+				}
+			})
 			this.$router.push({
 				name: 'NewQuestion'
 			})
-			// var app = this store
-			// this.$axios.post('/questioner/question/new', JSON.stringify(this.category))
-			// 	.then(function(response) {
-			// 			console.log(response) {
-			// 				app.$router.push({
-			// 					name: 'NewQuestion'
-			// 				})
-			// 			}
-			// 		}
 		},
 		message: function() {
 			return this.$store.state.message
