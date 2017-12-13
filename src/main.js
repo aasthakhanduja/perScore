@@ -9,12 +9,14 @@ import Vuex from 'vuex'
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Vue.use(BootstrapVue)
+import VueCookies from 'vue-cookies'
 
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
 Vue.use(Vuex)
 Vue.use(Buefy)
+Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 
@@ -38,7 +40,7 @@ const store = new Vuex.Store({
 
 // Setting up Axios on Vue Instance, for use via this.$axios
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://192.168.100.79:6040/',
+  baseURL: 'http://192.168.100.61:6040/',
   headers: {
     'Content-Type': 'application/json'
     // Authorization: 'Bearer {token}'

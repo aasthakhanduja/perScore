@@ -17,7 +17,8 @@ export default {
 		return {
 			list_categories: [],
 			category: {
-				categories: []
+				categories: [],
+				auth_token: ''
 			}
 		}
 	},
@@ -29,7 +30,7 @@ export default {
 			})
 
 			console.log(JSON.stringify(this.category))
-
+			this.category.auth_token = this.$cookies.get('token')
 			var app = this
 			// console.log(this.categories)
 			this.$axios.post('/approve_entries', JSON.stringify(this.category))

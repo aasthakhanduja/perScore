@@ -51,20 +51,7 @@ export default {
 				.then(function(response) {
 					console.log(response.data)
 					if (response.data.status === 'SUCCESS') {
-						console.log('SUCCHGHGHGHGHG')
-						// app.$store.commit('update', {
-						// 	status: response.data.status,
-						// 	message: response.data.message
-						// 	// app.categories: response.data.categories
-						// })
-						// console.log('Status: ' + app.$store.state.status)
-
-						// app.$router.push({
-						// 	name: 'Categories'
-						// })
-						// console.log(response)
 						app.questions = response.data.questions
-						// console.log(app.list_categories)
 					} else {
 						app.notify = true
 						app.colorClass = 'failure'

@@ -46,7 +46,8 @@ export default {
 		return {
 			user: {
 				email: '',
-				password: ''
+				password: '',
+				auth_token: ''
 			},
 			fields: [],
 			notify: false,
@@ -66,22 +67,24 @@ export default {
 	methods: {
 		submitForm: function(e) {
 			e.preventDefault()
+
 			var app = this
 			this.$axios.post('/login', JSON.stringify(this.user))
 				.then(function(response) {
 					console.log(response)
-					if (response.data.status === 'SUCCESS') {
+					if (response.data.Response.status === 'SUCCESS') {
+						app.$cookies.set('token', response.data.Token, 60 * 60 * 12)
 						app.$store.commit('update', {
-							status: response.data.status,
-							message: response.data.message,
-							response: response.data
+							status: response.data.Response.status,
+							message: response.data.Response.message,
+							response: response.data.Response
 						})
-						console.log('Status: ' + app.$store.state.status)
-						if (response.data.role === 'Administrator') {
+						console.log(app.$store.state.response)
+						if (response.data.Response.role === 'Administrator') {
 							app.$router.push({
 								name: 'Admin'
 							})
-						} else if (response.data.role === 'Questioner') {
+						} else if (response.data.Response.role === 'Questioner') {
 							app.$router.push({
 								name: 'Questioner'
 							})
@@ -94,10 +97,10 @@ export default {
 						app.notify = true
 						app.colorClass = 'failure'
 						app.$store.commit('update', {
-							status: response.data.status,
-							message: response.data.message
+							status: response.data.Response.status,
+							message: response.data.Response.message
 						})
-						app.fields = response.data.fields
+						app.fields = response.data.Response.fields
 					}
 				})
 				.catch(function(error) {
