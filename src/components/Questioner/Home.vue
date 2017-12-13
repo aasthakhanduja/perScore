@@ -8,11 +8,11 @@
 			<h2><b>Choose a category:</b></h2>
 			<ul class="categories">
 				<li v-for="category in categoriesToShow">
-					<a href="javascript:void(0)" :data-level="category.level" v-on:click="nextlevel">{{ category.name }}</a>
+					<a href="javascript:void(0)" :data-level="currentLevel" v-on:click="nextlevel">{{ category.name }}</a>
 				</li>
 			</ul>
 			<div class="control align-center">
-				<a class="button is-text" v-show="isSelected" v-on:click="goBack">← Previous List</a>
+				<a class="button is-text" v-show="hasPrevious" v-on:click="goBack">← Previous List</a>
 			</div>
 		</div>
 		<div class="column">
@@ -39,6 +39,7 @@ export default {
 			currentLevel: 1,
 			categoriesToShow: [],
 			isSelected: false,
+			hasPrevious: false,
 			selectedCategoryName: '',
 			categoryLastSelcted: []
 		}
@@ -62,20 +63,31 @@ export default {
 	},
 	methods: {
 		nextlevel: function(e) {
+			console.log(e.target.innerText)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
+			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
-					this.categoriesToShow.push(categories[i])
+				if (categories[i].name === e.target.innerText) {
+					selectedCategory = categories[i]
+					break
 				}
 			}
+			for (i = 0; i < categories.length; i++) {
+				if (categories[i].parent === selectedCategory.id) {
+					if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
+						this.categoriesToShow.push(categories[i])
+					}
+				}
+			}
+			this.selectedCategoryName = e.target.innerText
+			this.isSelected = true
+			this.categoryLastSelcted.push(this.selectedCategoryName)
 			if (this.categoriesToShow.length === 0) {
 				this.categoriesToShow = categoriesToShow
 			} else {
-				this.isSelected = true
-				this.categoryLastSelcted.push(this.selectedCategoryName)
-				this.selectedCategoryName = e.target.innerText
+				this.hasPrevious = true
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
 		},
@@ -83,20 +95,38 @@ export default {
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
+			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
-					this.categoriesToShow.push(categories[i])
+				if (categories[i].name === this.selectedCategoryName) {
+					selectedCategory = categories[i]
+					break
+				}
+			}
+			if (selectedCategory.parent === 0) {
+				for (i = 0; i < categories.length; i++) {
+					if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
+						this.categoriesToShow.push(categories[i])
+					}
+				}
+			} else {
+				for (i = 0; i < categories.length; i++) {
+					if (categories[i].parent === selectedCategory.parent) {
+						if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
+							this.categoriesToShow.push(categories[i])
+						}
+					}
 				}
 			}
 			if (this.categoriesToShow.length === 0) {
-				this.isSelected = false
 				this.categoriesToShow = categoriesToShow
+				this.selectedCategoryName = this.categoryLastSelcted.pop()
 			} else {
 				this.isSelected = true
 				this.selectedCategoryName = this.categoryLastSelcted.pop()
 				this.currentLevel = (this.currentLevel - 1)
-				if (this.categoryLastSelcted.length === 0) {
+				if (this.currentLevel === 1) {
 					this.isSelected = false
+					this.hasPrevious = false
 				}
 			}
 		},
@@ -111,7 +141,6 @@ export default {
 					break
 				}
 			}
-			console.log(category)
 			this.$store.commit('update', {
 				componentData: {
 					selectedCategoryName: this.selectedCategoryName,
@@ -176,7 +205,7 @@ div.q-actions div.control button {
 	margin-right: 4em;
 }
 
-q div.q-actions div.control span.fr-1 {
+div.q-actions div.control span.fr-1 {
 	position: absolute;
 	top: 0.5em;
 	left: -4em;
