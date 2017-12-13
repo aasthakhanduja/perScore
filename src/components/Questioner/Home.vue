@@ -12,7 +12,7 @@
 				</li>
 			</ul>
 			<div class="control align-center">
-				<a class="button is-text" v-show="isSelected" v-on:click="goBack">← Previous List</a>
+				<a class="button is-text" v-show="hasPrevious" v-on:click="goBack">← Previous List</a>
 			</div>
 		</div>
 		<div class="column">
@@ -39,6 +39,7 @@ export default {
 			currentLevel: 1,
 			categoriesToShow: [],
 			isSelected: false,
+			hasPrevious: false,
 			selectedCategoryName: '',
 			categoryLastSelcted: []
 		}
@@ -74,6 +75,7 @@ export default {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.isSelected = true
+				this.hasPrevious = true
 				this.categoryLastSelcted.push(this.selectedCategoryName)
 				this.selectedCategoryName = e.target.innerText
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
@@ -87,6 +89,9 @@ export default {
 				if (parseInt(categories[i].level) === (this.currentLevel - 1)) {
 					this.categoriesToShow.push(categories[i])
 				}
+			}
+			if (this.categoryLastSelcted.length === 1) {
+				this.hasPrevious = false
 			}
 			if (this.categoriesToShow.length === 0) {
 				this.isSelected = false
@@ -176,7 +181,7 @@ div.q-actions div.control button {
 	margin-right: 4em;
 }
 
-q div.q-actions div.control span.fr-1 {
+div.q-actions div.control span.fr-1 {
 	position: absolute;
 	top: 0.5em;
 	left: -4em;
