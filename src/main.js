@@ -40,7 +40,7 @@ const store = new Vuex.Store({
 
 // Setting up Axios on Vue Instance, for use via this.$axios
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://localhost:6040/',
+  baseURL: 'http://192.168.100.61:6040/',
   headers: {
     'Content-Type': 'application/json'
     // Authorization: 'Bearer {token}'

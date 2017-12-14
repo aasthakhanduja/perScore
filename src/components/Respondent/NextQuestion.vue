@@ -7,7 +7,11 @@
 		<ul id="question">
 			<lable is-pr>{{question_response.title}}</lable>
 			<li>{{question_response.body}}</li>
-			<input v-on:click='checkIt(answer)' type="radio" name="ques" v-model="selected" :value="answer">{{question_response.answer}} <br>
+			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option1" v-model="selected" :value="answer">{{question_response.answer.option1}}
+			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option2" v-model="selected" :value="answer">{{question_response.answer.option3}} <br>
+			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option3" v-model="selected" :value="answer">{{question_response.answer.option2}}
+			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option4" v-model="selected" :value="answer">{{question_response.answer.option4}} <br>
+			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option5" v-model="selected" :value="answer">{{question_response.answer.option5}} <br>
 		</ul>
 	</div>
 	<div class="button is-link">
@@ -64,14 +68,66 @@ export default {
 			this.selected = false
 		},
 		nextClick: function() {
-			if (this.qindex < this.questions.length - 1) {
-				this.qindex = this.qindex + 1
-			}
+			// if (this.question_request.question_id < this.questions.length - 1) {
+			this.question_request.auth_token = this.$cookies.get('token')
+			this.question_request.question_id = this.question_request.question_id + 1
+			// }
+			var app = this
+			this.$axios.post('/get_question', JSON.stringify(this.question_request))
+				.then(function(response) {
+					console.log(response.data)
+					if (response.data.status === 'SUCCESS') {
+						app.question_response.title = response.data.title
+						app.question_response.body = response.data.body
+						app.question_response.answer.option1 = response.data.answer.option1
+						app.question_response.answer.option2 = response.data.answer.option2
+						app.question_response.answer.option3 = response.data.answer.option3
+						app.question_response.answer.option4 = response.data.answer.option4
+						app.question_response.answer.option5 = response.data.answer.option5
+					} else {
+						app.notify = true
+						app.colorClass = 'failure'
+						app.$store.commit('update', {
+							status: response.data.status,
+							message: response.data.message
+						})
+						app.fields = response.data.fields
+					}
+				})
+				.catch(function(error) {
+					console.log(error)
+				})
 		},
 		prevClick: function() {
-			if (this.qindex > 0) {
-				this.qindex = this.qindex - 1
-			}
+			// if (this.qindex > 0) {
+			this.question_request.auth_token = this.$cookies.get('token')
+			this.question_request.question_id = this.question_request.question_id - 1
+			// }
+			var app = this
+			this.$axios.post('/get_question', JSON.stringify(this.question_request))
+				.then(function(response) {
+					console.log(response.data)
+					if (response.data.status === 'SUCCESS') {
+						app.question_response.title = response.data.title
+						app.question_response.body = response.data.body
+						app.question_response.answer.option1 = response.data.answer.option1
+						app.question_response.answer.option2 = response.data.answer.option2
+						app.question_response.answer.option3 = response.data.answer.option3
+						app.question_response.answer.option4 = response.data.answer.option4
+						app.question_response.answer.option5 = response.data.answer.option5
+					} else {
+						app.notify = true
+						app.colorClass = 'failure'
+						app.$store.commit('update', {
+							status: response.data.status,
+							message: response.data.message
+						})
+						app.fields = response.data.fields
+					}
+				})
+				.catch(function(error) {
+					console.log(error)
+				})
 		}
 	},
 	created() {
@@ -116,6 +172,10 @@ div.page_title {
 	font-size: 14pt;
 	font-weight: bold;
 	color: #7957d5;
+}
+
+.answers {
+	margin: 10px;
 }
 
 div.page_subtitles {
