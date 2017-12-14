@@ -7,6 +7,9 @@
 			<li v-for="category in list_categories"><button class="button is-text" v-model="category.id" :data-id="category.id" v-on:click="approve">Approve</button>{{ category.name }}</li><br>
 		</ul>
 	</div>
+	<div class="logout_top">
+		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+	</div>
 </div>
 </template>
 
@@ -66,6 +69,12 @@ export default {
 				})
 		}
 	},
+	logout: function() {
+		this.$cookies.remove("token");
+		app.$router.push({
+			name: 'Login'
+		})
+	},
 
 	// Fetches posts when the component is created.
 	created() {
@@ -114,4 +123,6 @@ div.control button {
 	float: right;
 	margin-right: 350px;
 }
+
+.logout_top {}
 </style>

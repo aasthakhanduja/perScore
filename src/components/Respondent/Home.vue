@@ -26,6 +26,9 @@
 					<a class="button is-success" type="button" v-on:click="start">Start The Challenge</a>
 				</div>
 			</div>
+			<div class="logout_top">
+				<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -84,6 +87,12 @@ export default {
 				this.selectedCategoryName = e.target.innerText
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
+		},
+		logout: function() {
+			this.$cookies.remove("token");
+			app.$router.push({
+				name: 'Login'
+			})
 		},
 		goBack: function(e) {
 			var categories = this.$store.state.response.categories
@@ -214,4 +223,6 @@ span.c-scn {
 .align-center {
 	text-align: center;
 }
+
+.logout_top {}
 </style>

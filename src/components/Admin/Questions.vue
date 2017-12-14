@@ -8,6 +8,9 @@
 		<p>{{ question.body}}</p>
 		<button class="button is-text" v-model="question.id" :data-id="question.id" v-on:click="approve">Approve</button>
 	</div>
+	<div class="logout_top">
+		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+	</div>
 </div>
 </template>
 
@@ -65,6 +68,12 @@ export default {
 				.catch(function(error) {
 					console.log(error)
 				})
+		},
+		logout: function() {
+			this.$cookies.remove("token");
+			app.$router.push({
+				name: 'Login'
+			})
 		}
 	}
 }
@@ -102,6 +111,8 @@ div.page_subtitles {
 	margin-right: 50px;
 	transform: translate(-330%);
 }
+
+.logout_top {}
 
 .question {}
 

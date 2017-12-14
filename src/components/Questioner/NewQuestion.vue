@@ -59,6 +59,10 @@
 				</div>
 				<div class="control">
 					<button class="button is-link" type="button" v-on:click="submitForm">Submit Question</button>
+
+				</div>
+				<div class="logout_top">
+					<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
 				</div>
 			</div>
 		</div>
@@ -168,6 +172,12 @@ export default {
 					console.log(error)
 				})
 		},
+		logout: function() {
+			this.$cookies.remove("token");
+			app.$router.push({
+				name: 'Login'
+			})
+		},
 		updateCategory: function(event) {
 			if (this.$refs.new_category.value !== '') {
 				this.selectedCategoryName = event.target.value
@@ -259,6 +269,8 @@ div.notification {
 a.cls {
 	top: 6px;
 }
+
+.logout_top {}
 
 span.cls {
 	position: absolute;

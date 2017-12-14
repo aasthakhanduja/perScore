@@ -8,6 +8,9 @@
 			<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
 		</form>
 	</div>
+	<div class="logout_top">
+		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+	</div>
 </div>
 </template>
 
@@ -18,6 +21,15 @@ export default {
 		return {
 			categories: [],
 			questions: []
+		}
+	},
+	methods: {
+		logout: function() {
+			this.$cookies.remove("token");
+			app.$router.push({
+				name: 'Login'
+			})
+
 		}
 	}
 }
@@ -39,4 +51,6 @@ div.page_subtitles {
 	font-weight: normal;
 	color: #7957d5;
 }
+
+.logout_top {}
 </style>

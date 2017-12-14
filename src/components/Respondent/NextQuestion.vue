@@ -21,7 +21,9 @@
 		<button v-on:click="reset" type="button">Reset</button>
 
 	</div>
-
+	<div class="logout_top">
+		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+	</div>
 </div>
 </template>
 
@@ -97,6 +99,12 @@ export default {
 				.catch(function(error) {
 					console.log(error)
 				})
+		},
+		logout: function() {
+			this.$cookies.remove("token");
+			app.$router.push({
+				name: 'Login'
+			})
 		},
 		prevClick: function() {
 			// if (this.qindex > 0) {
@@ -185,4 +193,6 @@ div.page_subtitles {
 	font-weight: normal;
 	color: #7957d5;
 }
+
+.logout_top {}
 </style>
