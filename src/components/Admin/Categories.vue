@@ -70,12 +70,11 @@ export default {
 		}
 	},
 	logout: function() {
-		this.$cookies.remove("token");
-		app.$router.push({
+		this.$cookies.remove('token')
+		this.$router.push({
 			name: 'Login'
 		})
 	},
-
 	// Fetches posts when the component is created.
 	created() {
 		var categories = this.$store.state.response.categories

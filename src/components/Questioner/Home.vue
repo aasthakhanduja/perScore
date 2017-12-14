@@ -95,11 +95,10 @@ export default {
 			}
 		},
 		logout: function() {
-			this.$cookies.remove("token");
-			app.$router.push({
+			this.$cookies.remove('token')
+			this.$router.push({
 				name: 'Login'
 			})
-
 		},
 		goBack: function(e) {
 			var categories = this.$store.state.response.categories
