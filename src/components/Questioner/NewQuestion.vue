@@ -1,6 +1,9 @@
 <template>
 <div class="questioner">
 	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="logout_top">
+		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+	</div>
 	<div class="questioner-functions columns">
 		<div class="column">
 			<label class="label is-horizontal">Submit New Question (For <span class="selected-category">{{ selectedCategoryName }}</span>)</label>
@@ -61,10 +64,9 @@
 					<button class="button is-link" type="button" v-on:click="submitForm">Submit Question</button>
 
 				</div>
-				<div class="logout_top">
-					<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
-				</div>
+
 			</div>
+
 		</div>
 	</div>
 </div>
@@ -270,7 +272,10 @@ a.cls {
 	top: 6px;
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 
 span.cls {
 	position: absolute;

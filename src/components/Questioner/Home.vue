@@ -1,6 +1,9 @@
 <template>
 <div class="questioner">
 	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="logout_top">
+		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+	</div>
 	<div class="page_title">Welcome Questioner!</div>
 
 	<div class="questioner-functions columns">
@@ -25,9 +28,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="logout_top">
-			<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
-		</div>
+
 	</div>
 
 </div>
@@ -248,5 +249,8 @@ div.q-actions div.control span.fr-3 {
 	text-align: center;
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 </style>
