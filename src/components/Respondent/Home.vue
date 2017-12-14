@@ -1,23 +1,31 @@
 <template>
-<div>
-	<div class="page_title">WELCOME, respondent!</div>
-	<div class="page_subtitles">
-		<p>your selected category is {{selectedCategoryName}}</p>
-		<h3>OR</h3>
-		<h4>Select from a choice below:</h4>
-	</div>
-	<nav>
-		<ul>
-			<li v-for="category in categoriesToShow">
-				<a href="javascript:void(0)" :data-level="category.level" v-on:click="nextlevel"> {{category.name}} </a></li>
-		</ul>
-	</nav>
-	<div class="button_group">
-		<div class="control go-back">
-			<button class="button is-link" type="button" v-show="isSelected" v-on:click="goBack">← Previous List</button>
+<div class="respondent">
+	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="page_title">Welcome Respondent!</div>
+
+	<div class="respondent-functions columns">
+		<div class="categories-section column is-one-third">
+			<div class="c-label">
+				Choose your interest:
+			</div>
+			<ul class="categories">
+				<li v-for="category in categoriesToShow">
+					<a href="javascript:void(0)" :data-level="currentLevel" v-on:click="nextlevel">{{ category.name }}</a>
+				</li>
+			</ul>
+			<div class="control align-center">
+				<a class="button is-text" v-show="hasPrevious" v-on:click="goBack">← Previous List</a>
+			</div>
 		</div>
-		<div class="control">
-			<button class="button is-success" type="button" v-on:click="start">Start the test</button>
+		<div class="column">
+			<div class="q-actions" v-show="isSelected">
+				<div class="c-label">
+					Interest selected: <span class="c-scn">{{ selectedCategoryName }}</span>
+				</div>
+				<div class="control">
+					<a class="button is-success" type="button" v-on:click="start">Start The Challenge</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -34,7 +42,6 @@ export default {
 			isSelected: false,
 			selectedCategoryName: '',
 			categoryLastSelcted: []
-
 		}
 	},
 	methods: {
@@ -98,9 +105,17 @@ export default {
 					this.isSelected = false
 				}
 			}
+		},
+		message: function() {
+			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
 		}
 	},
-
 	created() {
 		var categories = this.$store.state.response.categories
 		console.log(this.$store.state.response)
@@ -118,9 +133,7 @@ export default {
 
 <style scoped>
 div.respondent {
-	width: 30%;
-	margin-left: 15%;
-	position: center,
+	/*width: 30%;*/
 }
 
 div.page_title {
@@ -131,22 +144,74 @@ div.page_title {
 	color: #7957d5;
 }
 
-div.page_subtitles {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-	font-size: 12pt;
-	font-weight: normal;
-	color: #7957d5;
+div.respondent-functions {
+	margin-left: 15%;
+	margin-top: 2em;
 }
 
-.control {
-	font-size: 1rem;
-	position: relative;
+div.notification {
+	height: 2em;
 	text-align: center;
-	margin: 20px;
+	font-size: 14pt;
+	padding: 0.5rem 1.5rem 0.5rem 1.5rem;
 }
 
-.button_group {
-	display: -webkit-inline-box;
+ul.categories {
+	margin-top: 2em;
+	max-height: 50vh;
+	margin-bottom: 1em;
+}
+
+div.q-actions div.control {
+	position: absolute;
+	top: 20em;
+}
+
+div.q-actions div.control button {
+	margin-right: 4em;
+}
+
+div.q-actions div.control span.fr-1 {
+	position: absolute;
+	top: 0.5em;
+	left: -4em;
+}
+
+div.q-actions div.control span.fr-2 {
+	position: absolute;
+	top: 0.5em;
+	left: 9em;
+}
+
+div.q-actions div.control span.fr-3 {
+	position: absolute;
+	top: 6px;
+	left: 10.5em;
+	font-size: 14pt;
+	font-weight: bold;
+	text-decoration: underline;
+	color: crimson;
+}
+
+.c-label {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+span.c-scn {
+	text-decoration: underline;
+	color: crimson;
+}
+
+.success {
+	color: darkgreen;
+}
+
+.failure {
+	color: red;
+}
+
+.align-center {
+	text-align: center;
 }
 </style>

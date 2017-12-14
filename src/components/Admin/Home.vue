@@ -3,7 +3,7 @@
 	<div>
 		<form>
 			<div class="page_title">WELCOME, Admin!</div><br>
-			<div class="page_subtitles"> Approve via Categories or Questions! Click on the appropriate icon as per requirement. </div><br>
+			<div class="page_subtitles">Click on Categories or Questions to begin</div><br>
 			<router-link to="/admin/categories" class="button is-success"> Categories </router-link><br><br>
 			<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
 		</form>

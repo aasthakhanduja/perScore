@@ -40,7 +40,7 @@ const store = new Vuex.Store({
 
 // Setting up Axios on Vue Instance, for use via this.$axios
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://192.168.100.61:6040/',
+  baseURL: 'http://localhost:6040/',
   headers: {
     'Content-Type': 'application/json'
     // Authorization: 'Bearer {token}'
@@ -49,6 +49,10 @@ Vue.prototype.$axios = axios.create({
 // Default vars set up from localStorage (ie, user has come back)
 // Vue.prototype.$axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('id_token')}`;
 // Vue.prototype.$axios.defaults.headers.common['Access-Token'] = localStorage.getItem('auth_token');
+
+// Vue.filter('typeNumber', function (value) {
+//   return parseInt(value)
+// })
 
 /* eslint-disable no-new */
 new Vue({

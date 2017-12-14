@@ -33,24 +33,24 @@
 			<div class="is-horizontal fill-width top-2em">
 				<label class="label is-horizontal align-center">Answer</label>
 				<div class="field columns">
-					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 1"></span>
-					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+					<span class="column is-two-thirds"><input v-model="question.answer.option1" class="input" type="text" placeholder="Option 1"></span>
+					<span class="column is-one-third"><input v-model="question.answer.weights[0].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 				<div class="field columns">
-					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 2"></span>
-					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+					<span class="column is-two-thirds"><input v-model="question.answer.option2" class="input" type="text" placeholder="Option 2"></span>
+					<span class="column is-one-third"><input v-model="question.answer.weights[1].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 				<div class="field columns">
-					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 3"></span>
-					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+					<span class="column is-two-thirds"><input v-model="question.answer.option3" class="input" type="text" placeholder="Option 3"></span>
+					<span class="column is-one-third"><input v-model="question.answer.weights[2].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 				<div class="field columns">
-					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 4"></span>
-					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+					<span class="column is-two-thirds"><input v-model="question.answer.option4" class="input" type="text" placeholder="Option 4"></span>
+					<span class="column is-one-third"><input v-model="question.answer.weights[3].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 				<div class="field columns">
-					<span class="column is-two-thirds"><input class="input" type="text" placeholder="Option 5"></span>
-					<span class="column is-one-third"><input class="input" type="number" placeholder="Weight"></span>
+					<span class="column is-two-thirds"><input v-model="question.answer.option5" class="input" type="text" placeholder="Option 5"></span>
+					<span class="column is-one-third"><input v-model="question.answer.weights[4].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 			</div>
 			<div class="field is-grouped top-2em">
@@ -76,6 +76,7 @@ export default {
 			selectedCategory: {},
 			selectedCategoryName: '',
 			question: {
+				auth_token: '',
 				title: '',
 				body: '',
 				category: {},
@@ -86,11 +87,30 @@ export default {
 					option4: '',
 					option5: '',
 					categories: [],
-					weights: []
+					weights: [{
+							option: 1,
+							value: 0
+						},
+						{
+							option: 2,
+							value: 0
+						},
+						{
+							option: 3,
+							value: 0
+						},
+						{
+							option: 4,
+							value: 0
+						},
+						{
+							option: 5,
+							value: 0
+						}
+					]
 				},
 				weight: {
-					option: '',
-					value: ''
+					value: 0
 				},
 				status: '',
 				message: ''
@@ -100,13 +120,33 @@ export default {
 	created: function() {
 		this.lastCategory = this.$store.state.componentData.selectedCategory
 		this.selectedCategoryName = this.$store.state.componentData.selectedCategoryName
-		this.question.category = this.lastCategory
+		this.question.category = {
+			id: parseInt(this.lastCategory.id),
+			name: this.lastCategory.name,
+			parent: 0,
+			level: parseInt(this.lastCategory.level) + 1,
+			categories: []
+		}
+	},
+	filters: {
+		typeNumber: function(value) {
+			if (!value) return 0
+			return parseFloat(value)
+		}
 	},
 	methods: {
 		submitForm: function(event) {
 			event.preventDefault()
 			console.log(this.question)
 			var app = this
+			this.question.weight.value = parseFloat(this.question.weight.value)
+			for (var i = 0; i < 5; i++) {
+				this.question.answer.weights[i].value = parseFloat(this.question.answer.weights[i].value)
+			}
+			this.question.auth_token = app.$cookies.get('token')
+			if (Object.keys(this.selectedCategory).length !== 0) {
+				this.appendToLastEmptyCategory(this.question.category)
+			}
 			this.$axios.post('create_question', JSON.stringify(this.question))
 				.then(function(response) {
 					console.log(response)
@@ -114,7 +154,12 @@ export default {
 					app.message = response.data.message
 					if (response.data.status === 'SUCCESS') {
 						console.log('Status: ' + response.data.status)
-						app.$router.push({
+						app.$store.commit('update', {
+							status: response.data.status,
+							message: response.data.message,
+							response: response.data
+						})
+						app.$router.go({
 							name: 'Questioner'
 						})
 					}
@@ -124,24 +169,31 @@ export default {
 				})
 		},
 		updateCategory: function(event) {
-			this.selectedCategoryName = event.target.value
+			if (this.$refs.new_category.value !== '') {
+				this.selectedCategoryName = event.target.value
+				this.selectedCategory = {
+					id: 0,
+					name: this.$refs.new_category.value,
+					parent: parseInt(this.lastCategory.id),
+					level: parseInt(this.lastCategory.level) + 1,
+					categories: []
+				}
+			}
 		},
 		appendCategory: function(event) {
-			this.selectedCategory = {
-				id: 0,
-				name: this.$refs.new_category.value,
-				parent: this.lastCategory.id,
-				level: parseInt(this.lastCategory.level) + 1,
-				categories: []
-			}
 			this.appendToLastEmptyCategory(this.question.category)
 			this.lastCategory = this.selectedCategory
+			this.$refs.new_category.value = ''
+			this.selectedCategory = {}
 		},
 		appendToLastEmptyCategory: function(category) {
 			if (category.categories.length > 0) {
 				this.appendToLastEmptyCategory(category.categories[0])
+			} else {
+				// console.log('appendToLastEmptyCategory')
+				// console.log(category.name)
+				category.categories.push(this.selectedCategory)
 			}
-			category.categories.push(this.selectedCategory)
 		},
 		message: function() {
 			return this.$store.state.message

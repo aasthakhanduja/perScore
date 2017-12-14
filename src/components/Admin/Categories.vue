@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="page_title">WELCOME, Admin!</div>
-	<div class="page_subtitles"> Approve via viewing categories. </div>
+	<div class="page_subtitles">Approve Categories</div>
 	<div class="category_title">
 		<ul class="categoryShow" style="list-style-type:circle">
 			<li v-for="category in list_categories"><button class="button is-text" v-model="category.id" :data-id="category.id" v-on:click="approve">Approve</button>{{ category.name }}</li><br>

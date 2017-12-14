@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="page_title">WELCOME, Admin!</div><br>
-	<div class="page_subtitles"> Approve via viewing questions </div>
+	<div class="page_subtitles">Approve Questions</div>
 	<div v-for="question in questions" class="question_show">
 		<p class="question">{{ question.title }} </p>
 		<p>{{ question.answer }}</p>
