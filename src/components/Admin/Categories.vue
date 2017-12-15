@@ -1,9 +1,9 @@
 <template>
 <div>
-	<div class="page_title">WELCOME, Admin!</div>
 	<div class="logout_top">
-		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
+	<div class="page_title">WELCOME, Admin!</div>
 	<div class="page_subtitles">Approve Categories</div>
 	<div class="category_title">
 		<ul class="categoryShow" style="list-style-type:circle">
@@ -31,27 +31,12 @@ export default {
 				id: parseInt(e.target.getAttribute('data-id')),
 				approved: true
 			})
-
-			console.log(JSON.stringify(this.category))
 			this.category.auth_token = this.$cookies.get('token')
 			var app = this
-			// console.log(this.categories)
 			this.$axios.post('/approve_entries', JSON.stringify(this.category))
 				.then(function(response) {
-					console.log('response.data')
+					console.log(response)
 					if (response.data.status === 'SUCCESS') {
-						console.log('SUCCHGHGHGHGHG')
-						// app.$store.commit('update', {
-						// 	status: response.data.status,
-						// 	message: response.data.message
-						// 	// app.categories: response.data.categories
-						// })
-						// console.log('Status: ' + app.$store.state.status)
-
-						// app.$router.push({
-						// 	name: 'Categories'
-						// })
-						// console.log(response)
 						app.list_categories = response.data.categories
 						console.log(app.list_categories)
 					} else {
@@ -75,20 +60,25 @@ export default {
 			name: 'Login'
 		})
 	},
-	// Fetches posts when the component is created.
 	created() {
 		var categories = this.$store.state.response.categories
-		console.log(this.$store.state.response.categories)
+		console.log(categories)
 		this.list_categories = categories
-		// this.category.categories = categories
-		//
 	}
 }
 </script>
 
 <style>
-body {
-	line-height: 2.5;
+ul.categoryShow {
+	position: relative;
+	top: 2em;
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul.categoryShow li {
+	list-style: none;
 }
 
 div.page_title {
@@ -100,8 +90,8 @@ div.page_title {
 }
 
 div.page_subtitles {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+	margin-top: 2em;
+	margin-bottom: 1em;
 	font-size: 12pt;
 	font-weight: normal;
 	color: #7957d5;
@@ -124,7 +114,10 @@ div.control button {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 </style>

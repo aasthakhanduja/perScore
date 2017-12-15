@@ -2,7 +2,7 @@
 <div class="questioner">
 	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
 	<div class="logout_top">
-		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
 	<div class="page_title">Welcome Questioner!</div>
 
@@ -95,12 +95,6 @@ export default {
 				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
 			}
 		},
-		logout: function() {
-			this.$cookies.remove('token')
-			this.$router.push({
-				name: 'Login'
-			})
-		},
 		goBack: function(e) {
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
@@ -159,6 +153,14 @@ export default {
 			})
 			this.$router.push({
 				name: 'NewQuestion'
+			})
+		},
+		logout: function() {
+			this.notify = false
+			this.$cookies.remove('token')
+			// Object.assign(this.$data, this.$options.data())
+			this.$router.push({
+				name: 'Login'
 			})
 		},
 		message: function() {
@@ -250,7 +252,10 @@ div.q-actions div.control span.fr-3 {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 </style>

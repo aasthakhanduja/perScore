@@ -2,7 +2,7 @@
 <div class="questioner">
 	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
 	<div class="logout_top">
-		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
 	<div class="questioner-functions columns">
 		<div class="column">
@@ -276,8 +276,11 @@ a.cls {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 
 span.cls {

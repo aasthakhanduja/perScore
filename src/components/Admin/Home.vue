@@ -1,15 +1,14 @@
 <template>
 <div class="adminHome">
 	<div>
-		<form>
-			<div class="page_title">WELCOME, Admin!</div><br>
-			<div class="logout_top">
-				<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
-			</div>
-			<div class="page_subtitles">Click on Categories or Questions to begin</div><br>
-			<router-link to="/admin/categories" class="button is-success"> Categories </router-link><br><br>
-			<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
-		</form>
+		<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+		<div class="logout_top">
+			<a class="is-link" type="button" v-on:click="logout">Logout</a>
+		</div>
+		<div class="page_title">WELCOME, Admin!</div><br>
+		<div class="page_subtitles">Click on Categories or Questions to begin</div><br>
+		<router-link to="/admin/categories" class="button is-success"> Categories </router-link><br><br>
+		<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
 	</div>
 
 </div>
@@ -30,6 +29,15 @@ export default {
 			this.$router.push({
 				name: 'Login'
 			})
+		},
+		message: function() {
+			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
 		}
 	}
 }
@@ -53,7 +61,10 @@ div.page_subtitles {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 </style>

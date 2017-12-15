@@ -1,9 +1,9 @@
 <template>
 <div>
-	<div class="page_title">WELCOME, to your test!</div>
 	<div class="logout_top">
-		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
+	<div class="page_title">Here is your challenge!</div>
 	<div class="page_subtitles"> Get appropriate results in just a giffy </div>
 
 	<div class="next">
@@ -196,7 +196,10 @@ div.page_subtitles {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 </style>
