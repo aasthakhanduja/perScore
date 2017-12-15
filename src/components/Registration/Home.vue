@@ -91,7 +91,7 @@
 	</form>
 	<router-link to="/login" class="form_nav">Go to Login</router-link>
 	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
+		<button class="button is-link" type="button" v-on:click="logout">Logout</button>
 	</div>
 </div>
 </template>

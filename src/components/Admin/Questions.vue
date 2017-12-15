@@ -2,7 +2,7 @@
 <div>
 	<div class="page_title">WELCOME, Admin!</div><br>
 	<div class="logout_top">
-		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
 	<div class="page_subtitles">Approve Questions</div>
 	<div v-for="question in questions" class="question_show">
@@ -114,8 +114,11 @@ div.page_subtitles {
 }
 
 .logout_top {
-	float: right;
-	margin-right: 50px;
+	position: absolute;
+	text-align: right;
+	padding-right: 2em;
+	width: 100%;
+	font-size: large;
 }
 
 .question {}
