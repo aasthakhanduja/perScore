@@ -161,9 +161,12 @@ export default {
 						app.$store.commit('update', {
 							status: response.data.status,
 							message: response.data.message,
-							response: response.data
+							response: response.data,
+							componentData: {
+								selectedCategoryName: app.$store.state.componentData.selectedCategoryName
+							}
 						})
-						app.$router.go({
+						app.$router.push({
 							name: 'Questioner'
 						})
 					}
