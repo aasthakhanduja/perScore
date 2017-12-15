@@ -3,14 +3,15 @@
 	<div>
 		<form>
 			<div class="page_title">WELCOME, Admin!</div><br>
+			<div class="logout_top">
+				<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+			</div>
 			<div class="page_subtitles">Click on Categories or Questions to begin</div><br>
 			<router-link to="/admin/categories" class="button is-success"> Categories </router-link><br><br>
 			<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
 		</form>
 	</div>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
-	</div>
+
 </div>
 </template>
 
@@ -51,5 +52,8 @@ div.page_subtitles {
 	color: #7957d5;
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 </style>

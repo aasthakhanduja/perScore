@@ -1,6 +1,9 @@
 <template>
 <div>
 	<div class="page_title">WELCOME, to your test!</div>
+	<div class="logout_top">
+		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+	</div>
 	<div class="page_subtitles"> Get appropriate results in just a giffy </div>
 
 	<div class="next">
@@ -21,9 +24,7 @@
 		<button v-on:click="reset" type="button">Reset</button>
 
 	</div>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
-	</div>
+
 </div>
 </template>
 
@@ -194,5 +195,8 @@ div.page_subtitles {
 	color: #7957d5;
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 </style>

@@ -1,6 +1,9 @@
 <template>
 <div>
 	<div class="page_title">WELCOME, Admin!</div><br>
+	<div class="logout_top">
+		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+	</div>
 	<div class="page_subtitles">Approve Questions</div>
 	<div v-for="question in questions" class="question_show">
 		<p class="question">{{ question.title }} </p>
@@ -8,9 +11,7 @@
 		<p>{{ question.body}}</p>
 		<button class="button is-text" v-model="question.id" :data-id="question.id" v-on:click="approve">Approve</button>
 	</div>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
-	</div>
+
 </div>
 </template>
 
@@ -112,7 +113,10 @@ div.page_subtitles {
 	transform: translate(-330%);
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 
 .question {}
 

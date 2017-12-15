@@ -1,14 +1,14 @@
 <template>
 <div>
 	<div class="page_title">WELCOME, Admin!</div>
+	<div class="logout_top">
+		<a class="is-link" type="button" v-on:click="logout">LOGOUT</a>
+	</div>
 	<div class="page_subtitles">Approve Categories</div>
 	<div class="category_title">
 		<ul class="categoryShow" style="list-style-type:circle">
 			<li v-for="category in list_categories"><button class="button is-text" v-model="category.id" :data-id="category.id" v-on:click="approve">Approve</button>{{ category.name }}</li><br>
 		</ul>
-	</div>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">LOGOUT</button>
 	</div>
 </div>
 </template>
@@ -123,5 +123,8 @@ div.control button {
 	margin-right: 350px;
 }
 
-.logout_top {}
+.logout_top {
+	float: right;
+	margin-right: 50px;
+}
 </style>
