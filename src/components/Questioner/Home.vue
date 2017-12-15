@@ -156,12 +156,17 @@ export default {
 			})
 		},
 		logout: function() {
-			this.notify = false
-			this.$cookies.remove('token')
-			// Object.assign(this.$data, this.$options.data())
+			var result = this.$cookies.remove('token')
+			this.$store.commit('update', {
+				status: '',
+				message: '',
+				response: ''
+			})
+			if (result === true) {
 			this.$router.push({
 				name: 'Login'
 			})
+		}
 		},
 		message: function() {
 			return this.$store.state.message

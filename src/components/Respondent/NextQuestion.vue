@@ -10,17 +10,16 @@
 		<ul id="question">
 			<lable is-pr>{{question_response.title}}</lable>
 			<li>{{question_response.body}}</li>
-			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option1" v-model="selected" :value="answer">{{question_response.answer.option1}}
-			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option2" v-model="selected" :value="answer">{{question_response.answer.option3}} <br>
-			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option3" v-model="selected" :value="answer">{{question_response.answer.option2}}
-			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option4" v-model="selected" :value="answer">{{question_response.answer.option4}} <br>
-			<input class="answers" v-on:click='checkIt(answer)' type="radio" name="option5" v-model="selected" :value="answer">{{question_response.answer.option5}} <br>
+			<input class="answers" v-on:click='checkIt(question_response.answer.option1)' type="radio" name="option" v-model="selected" :value="question_response.answer.option1">{{question_response.answer.option1}}
+			<input class="answers" v-on:click='checkIt(question_response.answer.option2)' type="radio" name="option" v-model="selected" :value="question_response.answer.option2">{{question_response.answer.option3}} <br>
+			<input class="answers" v-on:click='checkIt(question_response.answer.option3)' type="radio" name="option" v-model="selected" :value="question_response.answer.option3">{{question_response.answer.option2}}
+			<input class="answers" v-on:click='checkIt(question_response.answer.option4)' type="radio" name="option" v-model="selected" :value="question_response.answer.option4">{{question_response.answer.option4}} <br>
+			<input class="answers" v-on:click='checkIt(question_response.answer.option5)' type="radio" name="option" v-model="selected" :value="question_response.answer.option5">{{question_response.answer.option5}} <br>
 		</ul>
 	</div>
 	<div class="button is-link">
 		<!-- <home-cmp :question="questions[qindex]"></home-cmp> -->
-		<button v-on:click="nextClick" type="button">Next</button>
-		<button type="button" v-on:click="prevClick">Previous</button>
+		<button v-on:click="submit" type="button">Submit</button>
 		<button v-on:click="reset" type="button">Reset</button>
 
 	</div>
@@ -70,7 +69,7 @@ export default {
 		reset: function() {
 			this.selected = false
 		},
-		nextClick: function() {
+		submit: function() {
 			// if (this.question_request.question_id < this.questions.length - 1) {
 			this.question_request.auth_token = this.$cookies.get('token')
 			this.question_request.question_id = this.question_request.question_id + 1
@@ -102,41 +101,17 @@ export default {
 				})
 		},
 		logout: function() {
-			this.$cookies.remove('token')
+			var result = this.$cookies.remove('token')
+			this.$store.commit('update', {
+				status: '',
+				message: '',
+				response: ''
+			})
+			if (result === true) {
 			this.$router.push({
 				name: 'Login'
 			})
-		},
-		prevClick: function() {
-			// if (this.qindex > 0) {
-			this.question_request.auth_token = this.$cookies.get('token')
-			this.question_request.question_id = this.question_request.question_id - 1
-			// }
-			var app = this
-			this.$axios.post('/get_question', JSON.stringify(this.question_request))
-				.then(function(response) {
-					console.log(response.data)
-					if (response.data.status === 'SUCCESS') {
-						app.question_response.title = response.data.title
-						app.question_response.body = response.data.body
-						app.question_response.answer.option1 = response.data.answer.option1
-						app.question_response.answer.option2 = response.data.answer.option2
-						app.question_response.answer.option3 = response.data.answer.option3
-						app.question_response.answer.option4 = response.data.answer.option4
-						app.question_response.answer.option5 = response.data.answer.option5
-					} else {
-						app.notify = true
-						app.colorClass = 'failure'
-						app.$store.commit('update', {
-							status: response.data.status,
-							message: response.data.message
-						})
-						app.fields = response.data.fields
-					}
-				})
-				.catch(function(error) {
-					console.log(error)
-				})
+		}
 		}
 	},
 	created() {

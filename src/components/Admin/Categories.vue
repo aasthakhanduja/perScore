@@ -52,13 +52,20 @@ export default {
 				.catch(function(error) {
 					console.log(error)
 				})
+		},
+		logout: function() {
+			var result = this.$cookies.remove('token')
+			this.$store.commit('update', {
+				status: '',
+				message: '',
+				response: ''
+			})
+			if (result === true) {
+			this.$router.push({
+				name: 'Login'
+			})
 		}
-	},
-	logout: function() {
-		this.$cookies.remove('token')
-		this.$router.push({
-			name: 'Login'
-		})
+		}
 	},
 	created() {
 		var categories = this.$store.state.response.categories

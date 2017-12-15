@@ -121,6 +121,10 @@ export default {
 </script>
 
 <style scoped>
+.button.is-link{
+   margin-left: 0em;
+   margin-right: 0em;
+}
 div.login {
 	width: 95%;
 	margin-left: auto;

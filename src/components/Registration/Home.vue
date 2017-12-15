@@ -90,9 +90,6 @@
 		</div>
 	</form>
 	<router-link to="/login" class="form_nav">Go to Login</router-link>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">Logout</button>
-	</div>
 </div>
 </template>
 
@@ -181,6 +178,11 @@ export default {
 				'success': (this.$store.state.status === 'SUCCESS'),
 				'failure': (this.$store.state.status === 'FAILURE')
 			}
+		},
+		redirectLogin: function() {
+			this.$router.push({
+				name: 'Login'
+			})
 		}
 	}
 }

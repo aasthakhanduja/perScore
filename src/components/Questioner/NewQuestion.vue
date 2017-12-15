@@ -178,10 +178,17 @@ export default {
 				})
 		},
 		logout: function() {
-			this.$cookies.remove('token')
+			var result = this.$cookies.remove('token')
+			this.$store.commit('update', {
+				status: '',
+				message: '',
+				response: ''
+			})
+			if (result === true) {
 			this.$router.push({
 				name: 'Login'
 			})
+		}
 		},
 		updateCategory: function(event) {
 			if (this.$refs.new_category.value !== '') {
