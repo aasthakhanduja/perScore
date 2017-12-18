@@ -178,19 +178,9 @@ export default {
 				this.request.answer.option5 = true
 			}
 		},
-<<<<<<< HEAD
-		reset: function() {
-			this.selected = false
-		},
-		submit: function() {
-			// if (this.question_request.question_id < this.questions.length - 1) {
-			this.question_request.auth_token = this.$cookies.get('token')
-			this.question_request.question_id = this.question_request.question_id + 1
-			// }
-=======
 		submitAnswer: function() {
 			this.request.question_id = this.response.id
->>>>>>> b79f6c4a6cd77a5fdd88e793868fd7b34c02543d
+			this.question_request.auth_token = this.$cookies.get('token')
 			var app = this
 			this.$axios.post('/get_question', JSON.stringify(this.request))
 				.then(function(response) {

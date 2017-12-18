@@ -163,7 +163,6 @@ export default {
 			this.$router.push({
 				name: 'Login'
 			})
-		}
 		},
 		message: function() {
 			return this.$store.state.message

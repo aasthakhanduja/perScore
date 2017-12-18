@@ -116,7 +116,6 @@ export default {
 				name: 'Login'
 			})
 		}
-		}
 	}
 }
 </script>

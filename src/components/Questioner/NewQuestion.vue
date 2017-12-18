@@ -184,7 +184,6 @@ export default {
 			this.$router.push({
 				name: 'Login'
 			})
-		}
 		},
 		updateCategory: function(event) {
 			if (this.$refs.new_category.value !== '') {
