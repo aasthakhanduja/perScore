@@ -90,9 +90,6 @@
 		</div>
 	</form>
 	<router-link to="/login" class="form_nav">Go to Login</router-link>
-	<div class="logout_top">
-		<button class="button is-link" type="button" v-on:click="logout">Logout</button>
-	</div>
 </div>
 </template>
 
@@ -120,8 +117,8 @@ export default {
 		}
 	},
 	methods: {
-		submitForm: function(e) {
-			e.preventDefault()
+		submitForm: function(event) {
+			event.preventDefault()
 			var app = this
 			this.$axios.post('/register', JSON.stringify(this.user))
 				.then(function(response) {

@@ -28,9 +28,7 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 </div>
 </template>
 
@@ -66,36 +64,36 @@ export default {
 		}
 	},
 	methods: {
-		nextlevel: function(e) {
-			console.log(e.target.innerText)
+		nextlevel: function(event) {
+			console.log(event.target.innerText)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
 			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (categories[i].name === e.target.innerText) {
+				if (categories[i].name === event.target.innerText) {
 					selectedCategory = categories[i]
 					break
 				}
 			}
 			for (i = 0; i < categories.length; i++) {
 				if (categories[i].parent === selectedCategory.id) {
-					if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
+					if (parseInt(categories[i].level) === (parseInt(event.target.getAttribute('data-level')) + 1)) {
 						this.categoriesToShow.push(categories[i])
 					}
 				}
 			}
-			this.selectedCategoryName = e.target.innerText
+			this.selectedCategoryName = event.target.innerText
 			this.isSelected = true
 			this.categoryLastSelcted.push(this.selectedCategoryName)
 			if (this.categoriesToShow.length === 0) {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.hasPrevious = true
-				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
+				this.currentLevel = (parseInt(event.target.getAttribute('data-level')) + 1)
 			}
 		},
-		goBack: function(e) {
+		goBack: function(event) {
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
@@ -134,8 +132,8 @@ export default {
 				}
 			}
 		},
-		newQuestion: function(e) {
-			e.preventDefault()
+		newQuestion: function(event) {
+			event.preventDefault()
 			var category
 			var categories = this.$store.state.response.categories
 			for (var i = 0; i < categories.length; i++) {
@@ -148,7 +146,8 @@ export default {
 			this.$store.commit('update', {
 				componentData: {
 					selectedCategoryName: this.selectedCategoryName,
-					selectedCategory: category
+					selectedCategory: category,
+					weightRange: category.weight_range
 				}
 			})
 			this.$router.push({
@@ -156,6 +155,7 @@ export default {
 			})
 		},
 		logout: function() {
+			this.$store.state.status = ''
 			this.notify = false
 			this.$cookies.remove('token')
 			// Object.assign(this.$data, this.$options.data())
@@ -206,6 +206,7 @@ ul.categories {
 	margin-top: 2em;
 	max-height: 50vh;
 	margin-bottom: 1em;
+	font-size: 14pt;
 }
 
 div.q-actions div.control {
