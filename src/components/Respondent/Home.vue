@@ -17,7 +17,7 @@
 				</li>
 			</ul>
 			<div class="control align-center">
-				<a class="button is-text" v-show="hasPrevious" v-on:click="goBack">← Previous List</a>
+				<a class="button is-text" v-show="hasPrevious" v-on:click="previousLevel">← Previous List</a>
 			</div>
 		</div>
 		<div class="column">
@@ -29,7 +29,6 @@
 					<a class="button is-success" type="button" v-on:click="start">Start The Challenge</a>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -50,48 +49,53 @@ export default {
 		}
 	},
 	created() {
-		var categories = this.$store.state.response.categories
 		console.log('Respondent Home ...')
-		console.log(categories)
-		if (categories !== undefined) {
-			for (var i = 0; i < categories.length; i++) {
-				if (parseInt(categories[i].level) === 1) {
-					this.categoriesToShow.push(categories[i])
+		if (this.$store.state.status === 'SUCCESS') {
+			this.notify = true
+			var categories = this.$store.state.response.categories
+			console.log(categories)
+			if (categories !== undefined) {
+				for (var i = 0; i < categories.length; i++) {
+					if (parseInt(categories[i].level) === 1) {
+						this.categoriesToShow.push(categories[i])
+					}
 				}
 			}
+		} else {
+			this.notify = false
 		}
 	},
 	methods: {
-		nextlevel: function(e) {
-			console.log(e.target.innerText)
+		nextlevel: function(event) {
+			console.log(event.target.innerText)
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
 			var selectedCategory
 			for (var i = 0; i < categories.length; i++) {
-				if (categories[i].name === e.target.innerText) {
+				if (categories[i].name === event.target.innerText) {
 					selectedCategory = categories[i]
 					break
 				}
 			}
 			for (i = 0; i < categories.length; i++) {
 				if (categories[i].parent === selectedCategory.id) {
-					if (parseInt(categories[i].level) === (parseInt(e.target.getAttribute('data-level')) + 1)) {
+					if (parseInt(categories[i].level) === (parseInt(event.target.getAttribute('data-level')) + 1)) {
 						this.categoriesToShow.push(categories[i])
 					}
 				}
 			}
-			this.selectedCategoryName = e.target.innerText
+			this.selectedCategoryName = event.target.innerText
 			this.isSelected = true
 			this.categoryLastSelcted.push(this.selectedCategoryName)
 			if (this.categoriesToShow.length === 0) {
 				this.categoriesToShow = categoriesToShow
 			} else {
 				this.hasPrevious = true
-				this.currentLevel = (parseInt(e.target.getAttribute('data-level')) + 1)
+				this.currentLevel = (parseInt(event.target.getAttribute('data-level')) + 1)
 			}
 		},
-		goBack: function(e) {
+		previousLevel: function() {
 			var categories = this.$store.state.response.categories
 			var categoriesToShow = this.categoriesToShow
 			this.categoriesToShow = []
@@ -130,8 +134,8 @@ export default {
 				}
 			}
 		},
-		start: function(e) {
-			e.preventDefault()
+		start: function(event) {
+			event.preventDefault()
 			var category
 			var categories = this.$store.state.response.categories
 			for (var i = 0; i < categories.length; i++) {
@@ -153,13 +157,9 @@ export default {
 			})
 		},
 		logout: function() {
-			var result = this.$cookies.remove('token')
-			this.$store.commit('update', {
-				status: '',
-				message: '',
-				response: ''
-			})
-			if (result === true) {
+			this.notify = false
+			this.$store.state.status = ''
+			this.$cookies.remove('token')
 			this.$router.push({
 				name: 'Login'
 			})
@@ -207,6 +207,7 @@ ul.categories {
 	margin-top: 2em;
 	max-height: 50vh;
 	margin-bottom: 1em;
+	font-size: 14pt;
 }
 
 div.q-actions div.control {

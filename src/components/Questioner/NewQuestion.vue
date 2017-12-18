@@ -28,6 +28,7 @@
 			</div>
 
 			<div class="field">
+				<span id="q-weight-range">{{ weight_range }}</span>
 				<div class="control">
 					<input v-model="question.weight.value" class="input" type="number" placeholder="Define Weight"></input>
 				</div>
@@ -56,17 +57,15 @@
 					<span class="column is-one-third"><input v-model="question.answer.weights[4].value" class="input" type="number" placeholder="Weight"></span>
 				</div>
 			</div>
+
 			<div class="field is-grouped top-2em">
 				<div class="control">
 					<button class="button is-link" type="button">Cancel</button>
 				</div>
 				<div class="control">
 					<button class="button is-link" type="button" v-on:click="submitForm">Submit Question</button>
-
 				</div>
-
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -118,6 +117,7 @@ export default {
 				weight: {
 					value: 0
 				},
+				weight_range: '',
 				status: '',
 				message: ''
 			}
@@ -126,6 +126,7 @@ export default {
 	created: function() {
 		this.lastCategory = this.$store.state.componentData.selectedCategory
 		this.selectedCategoryName = this.$store.state.componentData.selectedCategoryName
+		this.weight_range = this.$store.state.componentData.weightRange
 		this.question.category = {
 			id: parseInt(this.lastCategory.id),
 			name: this.lastCategory.name,
@@ -178,13 +179,8 @@ export default {
 				})
 		},
 		logout: function() {
-			var result = this.$cookies.remove('token')
-			this.$store.commit('update', {
-				status: '',
-				message: '',
-				response: ''
-			})
-			if (result === true) {
+			this.$store.state.status = ''
+			this.$cookies.remove('token')
 			this.$router.push({
 				name: 'Login'
 			})
@@ -202,7 +198,7 @@ export default {
 				}
 			}
 		},
-		appendCategory: function(event) {
+		appendCategory: function() {
 			this.appendToLastEmptyCategory(this.question.category)
 			this.lastCategory = this.selectedCategory
 			this.$refs.new_category.value = ''
@@ -212,8 +208,6 @@ export default {
 			if (category.categories.length > 0) {
 				this.appendToLastEmptyCategory(category.categories[0])
 			} else {
-				// console.log('appendToLastEmptyCategory')
-				// console.log(category.name)
 				category.categories.push(this.selectedCategory)
 			}
 		},
@@ -314,5 +308,12 @@ a.cls1 {
 .selected-category {
 	font-weight: bold;
 	color: crimson;
+}
+
+#q-weight-range {
+	position: absolute;
+	top: 0.6em;
+	left: -4em;
+	font-weight: bold;
 }
 </style>

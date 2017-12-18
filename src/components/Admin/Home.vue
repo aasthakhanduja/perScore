@@ -7,10 +7,9 @@
 		</div>
 		<div class="page_title">WELCOME, Admin!</div><br>
 		<div class="page_subtitles">Click on Categories or Questions to begin</div><br>
-		<router-link to="/admin/categories" class="button is-success"> Categories </router-link><br><br>
-		<router-link to="/admin/questions" class="button is-link"> Questions </router-link>
+		<router-link to="/admin/categories" class="button is-success">Categories</router-link><br><br>
+		<router-link to="/admin/questions" class="button is-link">Questions</router-link>
 	</div>
-
 </div>
 </template>
 
@@ -23,15 +22,17 @@ export default {
 			questions: []
 		}
 	},
+	created: function() {
+		if (this.$store.state.status === 'SUCCESS') {
+			this.notify = true
+		} else {
+			this.notify = false
+		}
+	},
 	methods: {
 		logout: function() {
-			var result = this.$cookies.remove('token')
-			this.$store.commit('update', {
-				status: '',
-				message: '',
-				response: ''
-			})
-			if (result === true) {
+			this.$store.state.status = ''
+			this.$cookies.remove('token')
 			this.$router.push({
 				name: 'Login'
 			})

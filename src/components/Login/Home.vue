@@ -1,7 +1,7 @@
 <template>
 <div class="login" id="login">
 	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
-	<div class="page_title">Login to PerScore</div>
+	<div class="page_title">Login to perScore</div>
 	<form class="login_form">
 		<div class="field">
 			<label class="label">Email</label>
@@ -58,16 +58,13 @@ export default {
 		console.log('Login created ...')
 		if (this.$store.state.status === 'SUCCESS') {
 			this.notify = true
-			return true
 		} else {
 			this.notify = false
-			return false
 		}
 	},
 	methods: {
-		submitForm: function(e) {
-			e.preventDefault()
-
+		submitForm: function(event) {
+			event.preventDefault()
 			var app = this
 			this.$axios.post('/login', JSON.stringify(this.user))
 				.then(function(response) {

@@ -1,13 +1,18 @@
 <template>
 <div>
+	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
 	<div class="logout_top">
+		<router-link to="/admin" class="is-link">Home</router-link>
+		&nbsp;&nbsp;
 		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
 	<div class="page_title">WELCOME, Admin!</div>
 	<div class="page_subtitles">Approve Categories</div>
 	<div class="category_title">
 		<ul class="categoryShow" style="list-style-type:circle">
-			<li v-for="category in list_categories"><button class="button is-text" v-model="category.id" :data-id="category.id" v-on:click="approve">Approve</button>{{ category.name }}</li><br>
+			<li v-for="category in categories">
+				<a class="button is-success" v-model="category.id" :data-id="category.id" v-on:click="approve">Approve</a> {{ category.name }}
+			</li><br>
 		</ul>
 	</div>
 </div>
@@ -18,17 +23,23 @@ export default {
 	name: 'AdminsCategories',
 	data() {
 		return {
-			list_categories: [],
+			categories: [],
 			category: {
 				categories: [],
 				auth_token: ''
-			}
+			},
+			notify: false,
+			colorClass: ''
 		}
 	},
+	created() {
+		this.categories = this.$store.state.response.categories
+		console.log(this.categories)
+	},
 	methods: {
-		approve: function(e) {
+		approve: function(event) {
 			this.category.categories.push({
-				id: parseInt(e.target.getAttribute('data-id')),
+				id: parseInt(event.target.getAttribute('data-id')),
 				approved: true
 			})
 			this.category.auth_token = this.$cookies.get('token')
@@ -37,8 +48,8 @@ export default {
 				.then(function(response) {
 					console.log(response)
 					if (response.data.status === 'SUCCESS') {
-						app.list_categories = response.data.categories
-						console.log(app.list_categories)
+						app.categories = response.data.categories
+						console.log(app.categories)
 					} else {
 						app.notify = true
 						app.colorClass = 'failure'
@@ -53,24 +64,22 @@ export default {
 					console.log(error)
 				})
 		},
+		message: function() {
+			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
+		},
 		logout: function() {
-			var result = this.$cookies.remove('token')
-			this.$store.commit('update', {
-				status: '',
-				message: '',
-				response: ''
-			})
-			if (result === true) {
+			this.$store.state.status = ''
+			this.$cookies.remove('token')
 			this.$router.push({
 				name: 'Login'
 			})
 		}
-		}
-	},
-	created() {
-		var categories = this.$store.state.response.categories
-		console.log(categories)
-		this.list_categories = categories
 	}
 }
 </script>

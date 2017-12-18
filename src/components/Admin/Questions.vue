@@ -1,17 +1,58 @@
 <template>
 <div>
-	<div class="page_title">WELCOME, Admin!</div><br>
+	<div class="notification" v-show="notify" v-bind:class="getColorClass()">{{ message() }}</div>
+	<div class="page_title">WELCOME, Admin!</div>
 	<div class="logout_top">
+		<router-link to="/admin" class="is-link">Home</router-link>
+		&nbsp;&nbsp;
 		<a class="is-link" type="button" v-on:click="logout">Logout</a>
 	</div>
 	<div class="page_subtitles">Approve Questions</div>
-	<div v-for="question in questions" class="question_show">
-		<p class="question">{{ question.title }} </p>
-		<p>{{ question.answer }}</p>
-		<p>{{ question.body}}</p>
-		<button class="button is-text" v-model="question.id" :data-id="question.id" v-on:click="approve">Approve</button>
-	</div>
-
+	<table v-for="question in questions" class="question_show">
+		<tr class="question">
+			<td style="width: 90%; padding-right: 2em;">
+				<table>
+					<tr>
+						<td><b>{{ question.title }}</b></td>
+					</tr>
+					<tr>
+						<td>{{ question.body }}</td>
+					</tr>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td style="padding-right: 2em; font-weight: bold;">Option 1:</td>
+									<td>{{ question.answer.option1 }}</td>
+								</tr>
+								<tr>
+									<td style="padding-right: 2em; font-weight: bold;">Option 2:</td>
+									<td>{{ question.answer.option2 }}</td>
+								</tr>
+								<tr>
+									<td style="padding-right: 2em; font-weight: bold;">Option 3:</td>
+									<td>{{ question.answer.option3 }}</td>
+								</tr>
+								<tr>
+									<td style="padding-right: 2em; font-weight: bold;">Option 4:</td>
+									<td>{{ question.answer.option4 }}</td>
+								</tr>
+								<tr>
+									<td style="padding-right: 2em; font-weight: bold;">Option 5:</td>
+									<td>{{ question.answer.option5 }}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<a class="button is-success approve" v-model="question.id" :data-id="question.id" v-on:click="approve">
+					Approve
+				</a>
+			</td>
+		</tr>
+	</table>
 </div>
 </template>
 
@@ -21,37 +62,26 @@ export default {
 	data() {
 		return {
 			questions: [],
-			list_questions: {
+			question: {
 				questions: []
-			}
+			},
+			notify: false,
+			colorClass: ''
 		}
 	},
 	created() {
 		console.log(this.$store.state.response)
-		var questions = this.$store.state.response.questions
-		// var answer = this.$store.state.response.answers
-		// console.log(this.$store.state.response)
-		// console.log('#########' + this.$store.state.response.questions)
-		// console.log(questions)
-		// console.log(this.$store.state.response.questions)
-		// console.log(this.$store.state.response.answers)
-		this.questions = questions
-		// this.list_answer = answer
-		// this.category.categories = categories
-		//
+		this.questions = this.$store.state.response.questions
 	},
 	methods: {
-		approve: function(e) {
-			this.list_questions.questions.push({
-				id: parseInt(e.target.getAttribute('data-id')),
+		approve: function(event) {
+			this.question.questions.push({
+				id: parseInt(event.target.getAttribute('data-id')),
 				approved: true
 			})
-			//
-			console.log(JSON.stringify(this.list_questions))
-			//
+			this.question.auth_token = this.$cookies.get('token')
 			var app = this
-
-			this.$axios.post('/approve_entries', JSON.stringify(this.list_questions))
+			this.$axios.post('/approve_entries', JSON.stringify(this.question))
 				.then(function(response) {
 					console.log(response.data)
 					if (response.data.status === 'SUCCESS') {
@@ -70,14 +100,18 @@ export default {
 					console.log(error)
 				})
 		},
+		message: function() {
+			return this.$store.state.message
+		},
+		getColorClass: function() {
+			return {
+				'success': (this.$store.state.status === 'SUCCESS'),
+				'failure': (this.$store.state.status === 'FAILURE')
+			}
+		},
 		logout: function() {
-			var result = this.$cookies.remove('token')
-			this.$store.commit('update', {
-				status: '',
-				message: '',
-				response: ''
-			})
-			if (result === true) {
+			this.$store.state.status = ''
+			this.$cookies.remove('token')
 			this.$router.push({
 				name: 'Login'
 			})
@@ -110,8 +144,13 @@ div.page_subtitles {
 
 .question_show {
 	display: flow-root;
-	margin-bottom: 5%;
-	border: 1px solid black;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	border-bottom: 1px solid black;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
 }
 
 .button {
@@ -128,7 +167,7 @@ div.page_subtitles {
 	font-size: large;
 }
 
-.question {}
-
-.question_button {}
+.approve {
+	float: right;
+}
 </style>

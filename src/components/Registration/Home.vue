@@ -117,8 +117,8 @@ export default {
 		}
 	},
 	methods: {
-		submitForm: function(e) {
-			e.preventDefault()
+		submitForm: function(event) {
+			event.preventDefault()
 			var app = this
 			this.$axios.post('/register', JSON.stringify(this.user))
 				.then(function(response) {
