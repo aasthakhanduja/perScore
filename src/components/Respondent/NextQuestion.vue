@@ -180,7 +180,7 @@ export default {
 		},
 		submitAnswer: function() {
 			this.request.question_id = this.response.id
-			this.question_request.auth_token = this.$cookies.get('token')
+			this.request.auth_token = this.$cookies.get('token')
 			var app = this
 			this.$axios.post('/get_question', JSON.stringify(this.request))
 				.then(function(response) {
