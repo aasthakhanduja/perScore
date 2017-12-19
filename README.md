@@ -4,10 +4,10 @@ This application provides the front end of the Personality score. This is implem
 Description
 This application uses Vue.js, JavaScript, HTML, CSS. Sending REST call from client to the server. These are following features of the application in terms of functionality .
 
-Note:
-- Make sure that node.js is installed in your system.
-- Before starting the application make sure that all the perScore back-end servers are up and running.
-- Make sure you have all the required and correct environment variable available before running the service.
+Note: 
+- Make sure that node.js is installed in your system. 
+- Before starting the application make sure that all the perScore back-end servers are up and running. 
+- Make sure you have all the required and correct environment variable available before running the service. 
 - Make sure that you have postgres installed in your machine.
 
  Login
@@ -34,15 +34,15 @@ vue-cookies: "^1.5.4",
 vue-router: "^3.0.1",
 vuex: "^3.0.1"
 Build and run this project
-Run command:
+Run command: 
 npm run dev
 
 Project Folder Structure Description
-1> Components:- The APP’S based directory will contain all the services that are,
-* Login
-* Admin
-* Registration
-* Respondent
+1> Components:- The APP’S based directory will contain all the services that are, 
+* Login 
+* Admin 
+* Registration 
+* Respondent 
 * Questioner
 
 2> Router:- It contain all the routes that are used by client as a rest call go.
